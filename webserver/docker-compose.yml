@@ -1,0 +1,65 @@
+version: '3.4'
+
+volumes:
+  pgdata-pocketmenu-volume:
+
+services:
+  db:
+    image: "postgres:12-alpine"
+    volumes:
+      - pgdata-pocketmenu-volume:/pgdata
+    ports:
+      - "${LOCAL_DB_PORT:-5432}:5432"
+    environment:
+      POSTGRES_PASSWORD: "${DB_PASSWORD:-getyourown}"
+      POSTGRES_USER: "${DB_USER:-pocketmenu}"
+      PGDATA: /pgdata
+    healthcheck:
+      # ensure postgress is running before web starts
+      test: ["CMD", "/usr/local/bin/pg_isready", "-U", "pocketmenu"]
+      interval: 10s
+      timeout: 30s
+      retries: 3
+
+  web:
+    image: "${COMPOSE_PROJECT_NAME}-webserver"
+    build:
+      context: .
+      args:
+        APP_ENV: "dev"
+    user: "${CURRENT_UID:-1000:1000}"
+    depends_on:
+      - db
+      # - webpack # react will be here as well
+
+    # Make interactive
+    stdin_open: true
+    tty: true
+    command: ["runserver", "0.0.0.0:8000"]
+
+    volumes:
+      - .:/var/task
+      - ./docker_venv_src:/opt/venv/src
+    ports:
+      - "${LOCAL_DJANGO_PORT:-8000}:8000"
+    environment:
+      SERVERLESS_ENV: "${SERVERLESS_ENV:-local}"
+      LOCAL_DJANGO_PORT: "${LOCAL_DJANGO_PORT:-8000}"
+      DJANGO_DEBUG: "${DJANGO_DEBUG:-false}"
+      DJANGO_LOG_LEVEL: "${DJANGO_LOG_LEVEL:-INFO}"
+      # AWS_DEFAULT_REGION: "${AWS_DEFAULT_REGION:-us-east-1}"
+      # AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
+      # AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
+      # AWS_SESSION_TOKEN: "${AWS_SESSION_TOKEN}"
+
+      DB_NAME: "${DB_NAME:-pocketmenu}"
+      DB_HOST: "${DB_HOST:-db}"
+      DB_PORT: "${DB_PORT:-5432}"
+      DB_USER: "${DB_USER:-pocketmenu}"
+      DB_PASSWORD: "${DB_PASSWORD:-getyourown}"
+
+# have to comment this out for this to run on the latest version of docker
+networks:
+  default:
+    external:
+      name: pocketmenu-local
