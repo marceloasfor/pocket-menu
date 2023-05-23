@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:15.3-alpine
+    volumes:
+       - ./db-data:/pgdata
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    environment:
+      POSTGRES_DB: "${DB_NAME:-pocket_menu_db}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD:-getyourown}"
+      POSTGRES_USER: "${DB_USER:-postgres}"
+      PGDATA: /pgdata
+
+  web:
+    image: "${COMPOSE_PROJECT_NAME}-webapp"
+    build:
+      context: .
+    user: "${CURRENT_UID:-1000:1000}"
+    depends_on:
+      - db
+
+    # Make interactive
+    stdin_open: true
+    tty: true
+    command: ["runserver", "0.0.0.0:8000"]
+
+    volumes:
+      - .:/var/task
+    ports:
+      - "${LOCAL_DJANGO_PORT:-8000}:8000"
+    environment:
+      DB_NAME: "${DB_NAME:-pocket_menu_db}"
+      DB_HOST: "${DB_HOST:-db}"
+      DB_PORT: "${DB_PORT:-5432}"
+      DB_USER: "${DB_USER:-timeout}"
+      DB_PASSWORD: "${DB_PASSWORD:-getyourown}"
+
