@@ -1,0 +1,8 @@
+<p>Olá Mundo!</p>
+{% if request.user.is_authenticated %}
+    <p class="text-center">Bem-vindo {{ request.user.username }} !</p>
+    <a href="{% url 'logout' %}">SAIR</a>
+{% else %}
+    <p class="text-center"><a href="/register">CRIAR CONTA</a></p>
+    <p class="text-center"><a href="/login">ENTRAR</a></p>
+{% endif %}
