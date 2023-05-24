@@ -1,0 +1,11 @@
+<div class="container py-5">
+	<h1>Cadastro</h1>
+	<form method="POST">
+		<!-- Adiciona um token CSRF para proteção contra ataques -->
+		{% csrf_token %}
+		<!-- Renderiza os campos do formulário -->
+		{{ form.as_p }}
+		<button class="btn btn-primary" type="submit">Criar conta</button>
+	</form>
+	<p class="text-center">Se você já possui uma conta faça <a href="/login">login aqui</a>.</p>
+</div>
