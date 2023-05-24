@@ -11,7 +11,7 @@ Certifique-se que o Docker está instalado e executando:
 docker info
 ```
 
-Dentro da pasta `pocket-menu/webapp`, construa e suba os containers de banco de dados (db) e aplicação Django (web):
+Dentro da pasta `pocket-menu/webapp`, crie uma cópia do arquivo `sample.env` e renomeie para `.env`. Em seguida, construa e suba os containers de banco de dados (db) e aplicação Django (web):
 ```
 docker-compose up --build -d web
 ```
