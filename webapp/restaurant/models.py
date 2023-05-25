@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
 
+from table.models import Table
 from .const import AVAILABLE_STATES
 
 class Restaurant(models.Model):
@@ -20,11 +21,25 @@ class Restaurant(models.Model):
     table_count = models.PositiveIntegerField(default=0, validators=[
         MinValueValidator(0), MaxValueValidator(50)
     ])
+    tables = models.ManyToManyField(Table, related_name='restaurants')
 
     class Meta:
         ordering = ['id']
         verbose_name_plural = "restaurants"
-    
+ 
+    def save(self, *args, **kwargs) -> None:
+        # Verifica se é um novo objeto ou uma atualização.
+        is_new = not self.pk
+        super().save(*args, **kwargs)
+
+        # Adiciona 'x' novos objetos de mesas em 'Restaurant'
+        # se este objeto foi recém-criado.
+        if is_new:
+            for _ in range(self.table_count):
+                # FIXME: 'capacity' NÃO PODE ser um valor fixo.
+                table = Table.objects.create(capacity=5)
+                self.tables.add(table)
+
     @property
     def formatted_phone(self) -> str:
         """Retorna o número do telefone reorganizado.
