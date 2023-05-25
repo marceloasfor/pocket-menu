@@ -1,0 +1,16 @@
+<h1>Restaurantes Disponíveis</h1>
+<ul>
+    {% for restaurant in restaurants %}
+        <li>
+            {{ restaurant.name }}
+            <br>
+            {{ restaurant.description }}
+            <br>
+            Mesas Disponíveis: {{ restaurant.table_count }}
+            <br>
+            <!-- TODO: Botão com redirect para 'request-entry' com contexto do restaurante atual. -->
+            <a href="{% url 'show_tables' restaurant_id=restaurant.id %}">Ver Mesas</a>
+        </li>
+        <br>
+    {% endfor %}
+</ul>
