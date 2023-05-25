@@ -1,0 +1,14 @@
+<h1>Informações da Mesa</h1>
+<p>Mesa N°: <strong>{{ table.id }}</strong></p>
+<p>Capacidade: <strong>{{ table.capacity }}</strong></p>
+<p>Usuários na Mesa:</p>
+<ul>
+    {% for user in table.users.all %}
+        <li>{{ user.username }}</li>
+    {% empty %}
+        <li>Nenhum usuário na mesa</li>
+    {% endfor %}
+</ul>
+{% if table.available %}
+    <p><a href="{% url 'request_entry' restaurant_id=restaurant_id table_id=table_id %}">SOLICITAR ENTRADA</a></p>
+{% endif %}

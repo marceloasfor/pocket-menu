@@ -1,0 +1,18 @@
+<h1>Mesas Disponíveis</h1>
+<ul>
+    {% for table in restaurant.tables.all %}
+        <li>
+            Mesa N°: <strong>{{ table.id }}</strong>
+            <br>
+            Capacidade: <strong>{{ table.capacity }}</strong>
+            <br>
+            Disponível: <strong>{% if table.available %}Sim{% else %}Não{% endif %}</strong>
+            <br>
+            <a href="{% url 'table_info' restaurant_id=restaurant.id table_id=table.id %}">VER USUÁRIOS NA MESA</a>
+            <br>
+            <a href="{% url 'request_entry' restaurant_id=restaurant.id table_id=table.id %}">SOLICITAR ENTRADA</a>
+            <br>
+        </li>
+        <br>
+    {% endfor %}
+</ul>
