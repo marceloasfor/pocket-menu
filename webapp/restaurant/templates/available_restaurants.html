@@ -1,0 +1,18 @@
+<h1>Restaurantes Disponíveis</h1>
+<ul>
+    {% for restaurant in restaurants %}
+        <li>
+            Nome: <strong>{{ restaurant.name }}</strong>
+            <br>
+            Descrição: {{ restaurant.description }}
+            <br>
+            Quantidade de Mesas: <strong>{{ restaurant.table_count }}</strong>
+            <br>
+            <!-- TODO: Botar a qntd. de mesas disponíveis ('available' == True) -->
+            Mesas Disponíveis: -
+            <br>
+            <a href="{% url 'show_tables' restaurant_id=restaurant.id %}">Ver Mesas</a>
+        </li>
+        <br>
+    {% endfor %}
+</ul>

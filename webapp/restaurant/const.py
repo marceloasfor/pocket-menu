@@ -1,4 +1,4 @@
-STATE_CHOICES = [
+AVAILABLE_STATES = [
         ("ac", "AC"),
         ("al", "AL"),
         ("ap", "AP"),
