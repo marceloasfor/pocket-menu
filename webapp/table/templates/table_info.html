@@ -12,3 +12,15 @@
 {% if table.available %}
     <p><a href="{% url 'request_entry' restaurant_id=restaurant_id table_id=table_id %}">SOLICITAR ENTRADA</a></p>
 {% endif %}
+
+<!-- Mostra 'messages' se houver alguma. -->
+{% if messages %}
+<br>
+<p class="messages">
+    <strong>
+    {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+    </strong>
+</p>
+{% endif %}

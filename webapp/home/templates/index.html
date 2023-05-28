@@ -1,10 +1,21 @@
 <h1>Pocket Menu</h1>
 {% if request.user.is_authenticated %}
     <p class="text-center">Bem-vindo <strong>{{ request.user.username }}</strong> !</p>
-    <a href="{% url 'available_restaurants' %}">VER RESTAURANTES DISPONÍVEIS</a>
-    <br>
-    <a href="{% url 'logout' %}">SAIR</a>
+    <p class="text-center"><a href="{% url 'available_restaurants' %}">VER RESTAURANTES DISPONÍVEIS</a></p>
+    <p class="text-center"><a href="{% url 'logout' %}">SAIR</a></p>
 {% else %}
     <p class="text-center"><a href="/register">CRIAR CONTA</a></p>
     <p class="text-center"><a href="/login">ENTRAR</a></p>
+{% endif %}
+
+<!-- Mostra 'messages' se houver alguma. -->
+{% if messages %}
+<br>
+<p class="messages">
+    <strong>
+    {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+    </strong>
+</p>
 {% endif %}
