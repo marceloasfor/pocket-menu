@@ -27,7 +27,7 @@ def register_view(request: HttpRequest) -> HttpResponse:
         form = NewUserForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Usuário cadastrado com sucesso.')
+            messages.success(request, "Usuário cadastrado com sucesso!")
             return redirect('login')
     else:
         form = NewUserForm()
@@ -59,6 +59,7 @@ def login_view(request: HttpRequest) -> HttpResponse:
             user = authenticate(request=request, username=username, password=password)
             if user is not None:
                 login(request, user)
+                messages.success(request, "Você agora está logado!")
                 return redirect('home')
     else:
         form = LoginForm(request)
@@ -80,4 +81,5 @@ def logout_view(request: HttpRequest) -> HttpResponse:
         A resposta com base na requisição feita.
     """
     logout(request)
+    messages.success(request, "Você saiu da sua conta!")
     return redirect('home')

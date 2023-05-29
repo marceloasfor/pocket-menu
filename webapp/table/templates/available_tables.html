@@ -1,6 +1,6 @@
 <h1>Mesas Disponíveis</h1>
 <ul>
-    {% for table in restaurant.tables.all %}
+    {% for table in restaurant.table_set.all %}
         <li>
             Mesa N°: <strong>{{ table.id }}</strong>
             <br>
@@ -12,7 +12,24 @@
             <br>
             <a href="{% url 'request_entry' restaurant_id=restaurant.id table_id=table.id %}">SOLICITAR ENTRADA</a>
             <br>
+            <!-- Botão para 'SAIR DA MESA' se o usuário autenticado estiver nela. -->
+            {% if request.user in table.users.all %}
+                <a href="{% url 'exit_table' restaurant_id=restaurant.id table_id=table.id %}">SAIR DA MESA</a>
+                <br>
+            {% endif %}
         </li>
         <br>
     {% endfor %}
 </ul>
+
+<!-- Mostra 'messages' se houver alguma. -->
+{% if messages %}
+<br>
+<p class="messages">
+    <strong>
+    {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+    </strong>
+</p>
+{% endif %}

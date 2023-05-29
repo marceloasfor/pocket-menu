@@ -1,3 +1,9 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Table
+
+
+class TableInline(admin.TabularInline):
+    model = Table
+    extra = 0
+    can_delete = False

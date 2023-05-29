@@ -4,12 +4,15 @@
         <li>
             Nome: <strong>{{ restaurant.name }}</strong>
             <br>
-            Descrição: {{ restaurant.description }}
+            Descrição: <strong><i>{{ restaurant.description }}</i></strong>
             <br>
-            Quantidade de Mesas: <strong>{{ restaurant.table_count }}</strong>
+            Endereço: <strong><i>{{ restaurant.address_line1 }}</i></strong>
             <br>
-            <!-- TODO: Botar a qntd. de mesas disponíveis ('available' == True) -->
-            Mesas Disponíveis: -
+            Telefone: <strong><i>{{ restaurant.formatted_phone }}</i></strong>
+            <br>
+            Quantidade de Mesas: <strong>{{ restaurant.table_set.count }}</strong>
+            <br>
+            Mesas Disponíveis: <strong>{{ restaurant.get_available_tables_count }}</strong>
             <br>
             <a href="{% url 'show_tables' restaurant_id=restaurant.id %}">Ver Mesas</a>
         </li>
