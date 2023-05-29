@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+
 class Table(models.Model):
     restaurant = models.ForeignKey('restaurant.Restaurant', on_delete=models.CASCADE)
     users = models.ManyToManyField(User, related_name="tables", blank=True, editable=False)

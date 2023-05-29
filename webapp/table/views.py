@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Table
 from restaurant.models import Restaurant
 
+
 @login_required
 def available_tables(request: HttpRequest, restaurant_id: int) -> HttpResponse:
     """Mostra as mesas disponíveis de algum restaurante."""

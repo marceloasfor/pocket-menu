@@ -87,6 +87,7 @@ class Restaurant(models.Model):
         str
             O CNPJ reorganizado.
         """
+        
         return f'{self.cnpj[0:2]}.{self.cnpj[2:5]}.{self.cnpj[5:8]}/{self.cnpj[8:12]}-{self.cnpj[12:]}'
 
     def get_available_tables_count(self) -> int:
