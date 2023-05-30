@@ -1,7 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
+from rest_framework import viewsets
+from rest_framework import permissions
 
+from .serializers import RestaurantSerializer
 from .models import Restaurant
+
 
 def index(request: HttpRequest) -> HttpResponse:
     restaurants = Restaurant.objects.all()
@@ -26,3 +30,8 @@ def show_tables(restaurant_id: int) -> HttpResponse:
     """
     return redirect('tables', restaurant_id=restaurant_id)
 
+
+class RestaurantViewSet(viewsets.ModelViewSet):
+    queryset = Restaurant.objects.all()
+    serializer_class = RestaurantSerializer
+    permission_classes = [permissions.AllowAny]

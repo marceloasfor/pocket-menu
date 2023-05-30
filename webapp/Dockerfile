@@ -4,6 +4,7 @@ FROM python:alpine3.18
 EXPOSE 80 8000
 
 RUN apk update
+RUN apk add gcc libxml2-dev musl-dev
 
 ENV VIRTUAL_ENV=/opt/venv
 RUN python3.11 -m venv $VIRTUAL_ENV
