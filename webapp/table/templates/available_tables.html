@@ -2,7 +2,7 @@
 <ul>
     {% for table in restaurant.table_set.all %}
         <li>
-            Mesa N°: <strong>{{ table.id }}</strong>
+            Mesa N°: <strong>{{ table.number }}</strong>
             <br>
             Capacidade: <strong>{{ table.capacity }}</strong>
             <br>
