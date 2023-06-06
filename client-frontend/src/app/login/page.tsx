@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useContext, useState } from "react"
+import { anonLogin } from "../utils/call";
 
 export default function LoginForm() {
     const searchParams = useSearchParams()
@@ -10,6 +11,7 @@ export default function LoginForm() {
     const handleChange = (e: any) => setName(e.target.value);
     const handleSubmit = async (e: any) => {
         e.preventDefault();
+        await anonLogin(name, searchParams.get("c")) 
         router.push(`/table?r=${searchParams.get("r")}&c=${searchParams.get("c")}&n=${name}`);
     }
     return (
