@@ -1,11 +1,13 @@
 from django.urls import path
 
-from .views import available_tables, table_info, request_entry, exit_table
+# from .views import available_tables, table_info, request_entry, exit_table
+from . import views
 
 # FIXME: Alterar <int:restaurant_id> para <str:restaurant_name>
 urlpatterns = [
-    path('tables/<int:restaurant_id>/', available_tables, name='available_tables'),
-    path('tables/<int:restaurant_id>/table_info/<int:table_id>/', table_info, name='table_info'),
-    path('tables/<int:restaurant_id>/table/<int:table_id>/request-entry/', request_entry, name='request_entry'),
-    path('tables/<int:restaurant_id>/table/<int:table_id>/exit-table/', exit_table, name='exit_table')
+    # path('tables/<int:restaurant_id>/', available_tables, name='available_tables'),
+    path('tables/member/', views.UsersInTableList.as_view(), name='table-members'),
+    # path('tables/<int:restaurant_id>/table_info/<int:table_id>/', table_info, name='table_info'),
+    # path('tables/<int:restaurant_id>/table/<int:table_id>/request-entry/', request_entry, name='request_entry'),
+    # path('tables/<int:restaurant_id>/table/<int:table_id>/exit-table/', exit_table, name='exit_table')
 ]

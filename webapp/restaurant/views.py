@@ -3,8 +3,8 @@ from django.http import HttpRequest, HttpResponse
 from rest_framework import viewsets
 from rest_framework import permissions
 
-from .serializers import RestaurantSerializer
-from .models import Restaurant
+from .serializers import RestaurantSerializer, ItemSerializer, ItemCategorySerializer
+from .models import Restaurant, ItemCategory, Item
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -35,3 +35,38 @@ class RestaurantViewSet(viewsets.ModelViewSet):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
     permission_classes = [permissions.AllowAny]
+
+
+class ItemCategoryViewSet(viewsets.ModelViewSet):
+    queryset = ItemCategory.objects.all()
+    serializer_class = ItemCategorySerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        restaurant = self.request.query_params.get('restaurant', 0)
+        try:
+            restaurant = int(restaurant)
+        except Exception as e:
+            raise(e)
+
+        if restaurant:
+            self.queryset = self.queryset.filter(restaurant=restaurant)
+        return self.queryset
+
+
+class ItemViewSet(viewsets.ModelViewSet):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        restaurant = self.request.query_params.get('restaurant', 0)
+        try:
+            restaurant = int(restaurant)
+        except Exception as e:
+            raise(e)
+
+        if restaurant:
+            self.queryset = self.queryset.filter(restaurant=restaurant)
+
+        return self.queryset

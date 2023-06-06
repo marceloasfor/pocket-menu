@@ -63,6 +63,9 @@ class Restaurant(models.Model):
         verbose_name = "Restaurante"
         verbose_name_plural = "Restaurantes"
 
+    def __str__(self):
+        return self.name
+
     @property
     def formatted_phone(self) -> str:
         """Retorna o número do telefone reorganizado.
@@ -87,7 +90,7 @@ class Restaurant(models.Model):
         str
             O CNPJ reorganizado.
         """
-        
+
         return f'{self.cnpj[0:2]}.{self.cnpj[2:5]}.{self.cnpj[5:8]}/{self.cnpj[8:12]}-{self.cnpj[12:]}'
 
     def get_available_tables_count(self) -> int:
@@ -103,3 +106,55 @@ class Restaurant(models.Model):
             A qntd. de mesas disponíveis.
         """
         return self.table_set.filter(available=True).count()
+
+
+class ItemCategory(models.Model):
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    name = models.CharField(
+        max_length=100,
+        blank=False,
+        verbose_name="Nome do Prato/Produto"
+    )
+    sort_order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['sort_order']
+        verbose_name = "ItemCategory"
+        verbose_name_plural = "ItemCategories"
+
+    def __str__(self):
+        return self.name
+
+
+class Item(models.Model):
+    name = models.CharField(
+        max_length=100,
+        blank=False,
+        verbose_name="Nome do Prato/Produto"
+    )
+    description = models.CharField(
+        max_length=255,
+        blank=True,
+        verbose_name="Descrição"
+    )
+    category = models.ForeignKey(ItemCategory, related_name='categories', on_delete=models.CASCADE)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        blank=True,
+        default=0.0
+    )
+    class Meta:
+        ordering = ['id']
+        verbose_name = "Item"
+        verbose_name_plural = "Itens"
+
+    def __str__(self):
+        return self.name
+
+# from restaurant.models import Item, ItemCategory
+# from restaurant.serializers import ItemSerializer, ItemCategorySerializer
+# item = Item.objects.get(id=1)
+# serializer = ItemSerializer(instance=item)
+# serializer.data

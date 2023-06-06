@@ -3,8 +3,6 @@ from rest_framework import routers
 
 from . import views
 
-router = routers.DefaultRouter()
-router.register(r'restaurant', views.RestaurantViewSet)
 
 api = [
     path('', include(router.urls)),
