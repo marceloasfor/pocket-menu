@@ -6,6 +6,7 @@ import { DataProvider } from "../contexts/data";
 import { TokenProvider } from "../contexts/token";
 import { getAllMenuItems } from "../actions";
 import { cookies } from "next/headers";
+import Header from "../header";
 
 
 async function getData(verCode:string) {
@@ -19,13 +20,14 @@ async function getData(verCode:string) {
 }
 
 export default async function Home() {
-  const restaurant = cookies().get("restaurant")
-  const verificationCode = cookies().get("verification_code")
-  const username = cookies().get("username")
-  const menuItems = await getAllMenuItems(restaurant?.value || "") || []
+  const restaurant = cookies().get("restaurant")?.value || ""
+  const verificationCode = cookies().get("verification_code")?.value || ""
+  const username = cookies().get("username")?.value || ""
+  const menuItems = await getAllMenuItems(restaurant) || []
   return (
     <ModalProvider>
-      <Table menuItems={menuItems} verificationCode={verificationCode?.value || ""} />
+      <Header code={verificationCode} username={username} />
+      <Table menuItems={menuItems} verificationCode={verificationCode} />
     </ModalProvider>
   );
 }

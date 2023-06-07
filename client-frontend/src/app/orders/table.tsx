@@ -18,7 +18,6 @@ export default async function Table({ orders, verificationCode }:{ orders:Order[
   
   return (
     <div className='h-screen'>
-      <Header code={verificationCode} />
       <div className='overflow-y-auto pb-20 pt-16 self-start'>
         <Orders orders={orders} />
       </div>

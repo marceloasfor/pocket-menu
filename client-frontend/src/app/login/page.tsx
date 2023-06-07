@@ -11,19 +11,8 @@ export default function LoginForm() {
     const handleChange = (e: any) => setName(e.target.value);
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        // await getAllUsers(searchParams.get("c"));
-        // console.log("get user ok")
         await anonLogin(name, searchParams.get("c"));
-        // console.log("post user ok")
-        // await exitTable(name);
-        // console.log("delete user ok")
-        // await getAllOrders(searchParams.get("c"));
-        // console.log("get order ok")
-        // await addOrder(searchParams.get("c"));
-        // console.log("post order ok")
-        // await getAllMenuItems(searchParams.get("r"));
-        // console.log("get menu ok")
-        setCookie("restaurant", searchParams.get("r") || "");
+        setCookie("restaurant", searchParams.get("r") || "1");
         setCookie("verification_code", searchParams.get("c") || "");
         setCookie("username", name || "");
         router.push(`/users`);

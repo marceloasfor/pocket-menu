@@ -15,7 +15,7 @@ function MenuItemCard({ item=null, verificationCode="" }:{ item:MenuItem|null, v
         <h1 className="m-4">{item.name}</h1>
       </div>
       <div className="flex flex-row m-4">
-        <h1 className="bg-white m-4 self-center">R${item.price.toFixed(2)}</h1>
+        <h1 className="bg-white m-4 self-center">R${item.price}</h1>
         <button className="bg-white p-4" onClick={() => {orderItem(verificationCode, item.id)}}>Order</button>
       </div>
     </div>

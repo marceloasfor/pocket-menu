@@ -5,7 +5,7 @@ function UserCard({ user=null }:{ user:User|null }) {
     return (
         <div className='bg-indigo-500 rounded-lg m-4 grid justify-center text-center md:flex md:justify-start p-4'>
             <div className="bg-black m-8 rounded-full h-32 w-32"></div>
-            <h1 className="self-center">{user.name}</h1>
+            <h1 className="self-center">{user.username}</h1>
         </div>
     )
 }

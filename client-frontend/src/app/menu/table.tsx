@@ -14,11 +14,9 @@ import { MenuItem } from '../interfaces/menu-item';
 export default async function Table({ menuItems, verificationCode }:{ menuItems:MenuItem[], verificationCode:string }) {
   const router = useRouter();
   const { modal } = useContext(ModalContext);
-
   
   return (
     <div className='h-screen'>
-      <Header code={verificationCode} />
       <div className='overflow-y-auto pb-20 pt-16 self-start'>
         <Menu menuItems={menuItems} verificationCode={verificationCode} />
       </div>

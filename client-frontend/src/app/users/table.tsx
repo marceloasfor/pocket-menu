@@ -16,7 +16,6 @@ export default async function Table({ users, verificationCode }:{ users:User[], 
   
   return (
     <div className='h-screen'>
-      <Header code={verificationCode} />
       <div className='overflow-y-auto pb-20 pt-16 self-start'>
         <Users users={users} />
       </div>

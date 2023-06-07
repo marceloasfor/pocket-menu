@@ -1,17 +1,19 @@
+"use client";
+
 import { useContext, useState } from "react"
 import { ModalContext } from "./contexts/modal";
 import AlertDialog from "./dialogs/alert";
 import Payment from "./dialogs/payment";
 import ExitDialog from "./dialogs/exit";
 
-export default function Header({ code="" }:{ code:string }) {
+export default function Header({ code="", username }:{ code:string, username:string }) {
     const [modal, setModal] = useState<React.JSX.Element|null>(null);
     const [showOptions, setShowOptions] = useState(false);
     const toggleOptions = () => {
         setShowOptions(!showOptions);
     }
 
-    console.log(modal)
+    console.log(username)
 
     const showAlert = () => {
         setModal(<AlertDialog message="Um atendente foi chamado." setModal={setModal} />)
@@ -20,7 +22,7 @@ export default function Header({ code="" }:{ code:string }) {
         setModal(<Payment setModal={setModal} />)
     }
     const showExit = () => {
-        setModal(<ExitDialog setModal={setModal} />)
+        setModal(<ExitDialog setModal={setModal} username={username} />)
     }
 
     return (
