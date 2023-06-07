@@ -10,7 +10,7 @@ function UserCard({ user=null }:{ user:User|null }) {
     )
 }
 
-export default function Users({ users=[] }:{ users:User[] }) {
+export default function Users({ users }:{ users:User[] }) {
     if (users.length === 0) return null;
     
     const userCards: React.JSX.Element[] = [];

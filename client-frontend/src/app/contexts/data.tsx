@@ -1,7 +1,7 @@
 "use client";
 
 import { Dispatch, SetStateAction, createContext, useState } from 'react';
-import { Data } from '../table/interfaces/data';
+import { Data } from '../interfaces/data';
 
 
 type ContextValueType = {

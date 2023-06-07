@@ -1,9 +1,6 @@
-import { useContext } from "react";
-import { ModalContext } from "../../contexts/modal";
+import { Dispatch, SetStateAction, useContext } from "react";
 
-export default function AlertDialog({ message="" }:{ message:string }) {
-    const {modal, setModal} = useContext(ModalContext);
-
+export default function AlertDialog({ message="", setModal }:{ message:string, setModal:Dispatch<SetStateAction<JSX.Element | null>> }) {
     return (
         <div className="grid absolute inset-0 h-screen w-screen items-center z-30">
             <div className="bg-white grid gap-4 justify-items-center text-center m-auto p-12">

@@ -9,14 +9,14 @@
 //     return result.res
 // }
 
-export async function anonLogin(username:string, code:string|null) {
-  const res = await fetch('http://localhost:3000/api/login', {
-      method: 'POST',
-      body: JSON.stringify({ username: username, verification_code: code }),
-    })
-  const result = await res.json()
-  return result.res
-}
+// export async function anonLogin(username:string, code:string|null) {
+//   const res = await fetch('http://localhost:3000/api/login', {
+//       m
+//   const result = await res.json()ethod: 'POST',
+//       body: JSON.stringify({ username: username, verification_code: code }),
+//     })
+//   return result.res
+// }
 
 // export async function anonLogout(token:string|null) {
 //   const res = await fetch('http://localhost:3000/api/logout', {

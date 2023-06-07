@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useContext, useState } from "react"
-import { anonLogin } from "../utils/call";
+import { useState } from "react"
+import { getAllUsers, anonLogin, addOrder, exitTable, getAllMenuItems, getAllOrders, setCookie } from "../actions";
 
 export default function LoginForm() {
     const searchParams = useSearchParams()
@@ -11,8 +11,22 @@ export default function LoginForm() {
     const handleChange = (e: any) => setName(e.target.value);
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        await anonLogin(name, searchParams.get("c")) 
-        router.push(`/table?r=${searchParams.get("r")}&c=${searchParams.get("c")}&n=${name}`);
+        // await getAllUsers(searchParams.get("c"));
+        // console.log("get user ok")
+        await anonLogin(name, searchParams.get("c"));
+        // console.log("post user ok")
+        // await exitTable(name);
+        // console.log("delete user ok")
+        // await getAllOrders(searchParams.get("c"));
+        // console.log("get order ok")
+        // await addOrder(searchParams.get("c"));
+        // console.log("post order ok")
+        // await getAllMenuItems(searchParams.get("r"));
+        // console.log("get menu ok")
+        setCookie("restaurant", searchParams.get("r") || "");
+        setCookie("verification_code", searchParams.get("c") || "");
+        setCookie("username", name || "");
+        router.push(`/users`);
     }
     return (
         <div className="flex h-screen">

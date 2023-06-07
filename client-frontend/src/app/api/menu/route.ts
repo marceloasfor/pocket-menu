@@ -1,4 +1,3 @@
-import { fetchMenu } from '@/app/utils/fetch';
 import { NextResponse } from 'next/server';
  
 export async function GET() {

@@ -1,10 +1,8 @@
-import { useContext } from "react";
-import { ModalContext } from "../../contexts/modal";
-import { useRouter } from "next/router";
+import { Dispatch, SetStateAction, useContext } from "react";
+import { useRouter } from "next/navigation";
 
-export default function ExitDialog() {
+export default function ExitDialog({ setModal }:{ setModal:Dispatch<SetStateAction<JSX.Element | null>> }) {
     const router = useRouter();
-    const {modal, setModal} = useContext(ModalContext);
     
     const exitTable = () => {
         router.push(`/verification`);

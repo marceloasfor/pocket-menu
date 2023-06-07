@@ -1,10 +1,12 @@
+import { addOrder } from "../actions";
 import { MenuItem } from "../interfaces/menu-item";
 
-function addOrder(id: number) { // TODO: check if this is not rendered in the client side
+async function orderItem(verificationCode:string, id:number) { // TODO: check if this is not rendered in the client side
   console.log("POST request to the backend (?) to order ");
+  await addOrder(verificationCode, id);
 }
 
-function MenuItemCard({ item=null }:{ item:MenuItem|null }) {
+function MenuItemCard({ item=null, verificationCode="" }:{ item:MenuItem|null, verificationCode:string }) {
   if (item === null) return null
   return (
     <div className='bg-indigo-500 rounded-lg m-4 flex justify-between'>
@@ -14,17 +16,17 @@ function MenuItemCard({ item=null }:{ item:MenuItem|null }) {
       </div>
       <div className="flex flex-row m-4">
         <h1 className="bg-white m-4 self-center">R${item.price.toFixed(2)}</h1>
-        <button className="bg-white p-4" onClick={() => {addOrder(item.id)}}>Order</button>
+        <button className="bg-white p-4" onClick={() => {orderItem(verificationCode, item.id)}}>Order</button>
       </div>
     </div>
   )
 }
 
-export default function Menu({ menuItems=[] }:{ menuItems:MenuItem[] }) {
+export default function Menu({ menuItems=[], verificationCode="" }:{ menuItems:MenuItem[], verificationCode:string }) {
   if (menuItems.length === 0) return null;
   
   const menuItemCards: React.JSX.Element[] = [];
-  menuItems.forEach((m, i) => menuItemCards.push(<MenuItemCard key={i} item={m} />));
+  menuItems.forEach((m, i) => menuItemCards.push(<MenuItemCard key={i} item={m} verificationCode={verificationCode} />));
 
   return (
       <div>

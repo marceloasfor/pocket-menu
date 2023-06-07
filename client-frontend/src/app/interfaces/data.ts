@@ -6,6 +6,7 @@ export interface Data {
     users:User[];
     orders:Order[];
     menu:MenuItem[];
+    restaurant:string;
     verificationCode:string;
     username:string|null;
 }

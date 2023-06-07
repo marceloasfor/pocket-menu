@@ -1,11 +1,11 @@
 import { useContext, useState } from "react"
-import { ModalContext } from "../contexts/modal";
+import { ModalContext } from "./contexts/modal";
 import AlertDialog from "./dialogs/alert";
 import Payment from "./dialogs/payment";
 import ExitDialog from "./dialogs/exit";
 
 export default function Header({ code="" }:{ code:string }) {
-    const {modal, setModal} = useContext(ModalContext);
+    const [modal, setModal] = useState<React.JSX.Element|null>(null);
     const [showOptions, setShowOptions] = useState(false);
     const toggleOptions = () => {
         setShowOptions(!showOptions);
@@ -14,17 +14,18 @@ export default function Header({ code="" }:{ code:string }) {
     console.log(modal)
 
     const showAlert = () => {
-        setModal(<AlertDialog message="Um atendente foi chamado." />)
-    }
-    const showExit = () => {
-        setModal(<ExitDialog />)
+        setModal(<AlertDialog message="Um atendente foi chamado." setModal={setModal} />)
     }
     const showPayment = () => {
-        setModal(<Payment />)
+        setModal(<Payment setModal={setModal} />)
+    }
+    const showExit = () => {
+        setModal(<ExitDialog setModal={setModal} />)
     }
 
     return (
         <div>
+            {modal}
             <div className='bg-white fixed flex flex-row gap-4 p-4 inset-x-0 top-0 z-10 justify-between'>
                 <button className='bg-indigo-500 h-10 w-10 rounded-full' onClick={toggleOptions}>...</button>
                 <div className='self-center justify-end'>

@@ -1,9 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Dispatch, SetStateAction, useContext, useState } from "react";
-
-import { verifyCode } from "../utils/call";
+import { useState } from "react";
 
 
 export default function VerificationForm() {
@@ -13,7 +11,7 @@ export default function VerificationForm() {
     const handleChange = (e: any) => setCode(e.target.value);
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        router.push(`/login?c=${code}`);
+        router.push(`/login?r=1&c=${code}`);
     }
     return (
         <div className="flex h-screen">
