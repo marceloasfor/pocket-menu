@@ -89,6 +89,17 @@ class UsersInTableList(APIView):
             table[0].users.add(user[0].id)
             return Response({'verification_code': verification_code}, status=status.HTTP_201_CREATED)
 
+    def delete(self, request, format=None):
+        body = json.loads(request.body)
+        username = body.get('username')
+        if not username:
+            return Response({'error': 'username not provided'}, status=status.HTTP_400_BAD_REQUEST)
+        user = User.objects.get(username=username)
+        table = Table.objects.filter(users__in=[user.id])
+        if table:
+            table[0].users.remove(user)
+            return Response({'Success': f'{user.username} removed from table'}, status=status.HTTP_200_OK)
+        return Response({'Error': f'{user.username} Not in any table'}, status=status.HTTP_404_NOT_FOUND)
 
 @login_required
 def available_tables(request: HttpRequest, restaurant_id: int) -> HttpResponse:
