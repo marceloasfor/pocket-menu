@@ -45,6 +45,15 @@ class Order(models.Model):
     order_items = models.ManyToManyField(OrderItem, blank=True, editable=False)
 
     @classmethod
+    def active_orders_for_restaurant(cls, restaurant_id):
+        table_qs = Table.objects.filter(restaurant__in=[restaurant_id])
+        orders_qs = cls.objects.filter(
+            status=Order.STATUS.CREATED,
+            table__in=table_qs,
+        )
+        return orders_qs
+
+    @classmethod
     def active_orders_for_user(cls, user):
         order = cls.objects.filter(user_id=user, status=Order.STATUS.CREATED)
         if order.exists():

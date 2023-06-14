@@ -3,6 +3,7 @@ from django.http import HttpRequest, HttpResponse
 from rest_framework import viewsets
 from rest_framework import permissions
 
+from order.models import Order
 from .serializers import RestaurantSerializer, ItemSerializer, ItemCategorySerializer
 from .models import Restaurant, ItemCategory, Item
 
@@ -31,8 +32,13 @@ def show_tables(restaurant_id: int) -> HttpResponse:
     return redirect('tables', restaurant_id=restaurant_id)
 
 def order_management(request: HttpRequest) -> HttpResponse:
-    restaurants = Restaurant.objects.all()
-    context = {'restaurants': restaurants}
+    # TODO: need to update the restaurant_id from url param?
+    orders_qs = Order.active_orders_for_restaurant(restaurant_id=1)
+    items = []
+    for order in orders_qs:
+        for item in order.order_items.all():
+            items.append(f'{item.item_name} - {order.table.number}')
+    context = {'items': items}
     return render(request=request, template_name='orders_management.html', context=context)
 
 def restaurant_login(request: HttpRequest) -> HttpResponse:
