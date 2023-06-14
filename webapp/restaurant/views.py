@@ -31,9 +31,8 @@ def show_tables(restaurant_id: int) -> HttpResponse:
     """
     return redirect('tables', restaurant_id=restaurant_id)
 
-def order_management(request: HttpRequest) -> HttpResponse:
-    # TODO: need to update the restaurant_id from url param?
-    orders_qs = Order.active_orders_for_restaurant(restaurant_id=1)
+def order_management(request: HttpRequest, restaurant_id: int) -> HttpResponse:
+    orders_qs = Order.active_orders_for_restaurant(restaurant_id=restaurant_id)
     items = []
     for order in orders_qs:
         for item in order.order_items.all():
@@ -46,6 +45,10 @@ def restaurant_login(request: HttpRequest) -> HttpResponse:
     context = {'restaurants': restaurants}
     return render(request=request, template_name='restaurant_login.html', context=context)
 
+def restaurant_select(request: HttpRequest) -> HttpResponse:
+    restaurants = Restaurant.objects.all()
+    context = {'restaurants': restaurants}
+    return render(request=request, template_name='restaurant_select.html', context=context)
 
 class RestaurantViewSet(viewsets.ModelViewSet):
     queryset = Restaurant.objects.all()

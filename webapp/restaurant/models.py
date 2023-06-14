@@ -53,7 +53,7 @@ class Restaurant(models.Model):
         blank=False,
         verbose_name="Telefone",
         validators=[
-            MinLengthValidator(11, message='O telefone deve ter no mínimo 11 dígitos, incluindo o DDD.'),
+            MinLengthValidator(10, message='O telefone deve ter no mínimo 10 dígitos, incluindo o DDD.'),
             MaxLengthValidator(11, message='O telefone deve ter no máximo 11 dígitos, incluindo o DDD.')
         ]
     )

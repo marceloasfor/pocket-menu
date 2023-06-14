@@ -1,0 +1,59 @@
+<html>
+<head>
+    <title>Página Inicial</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+      <style>
+        body {
+        background-image: url('/static/copy-space-italian-food-ingredients_23-2148551732.avif');
+        background-repeat: no-repeat;
+        background-size: cover;
+        }
+
+        .lista-com-rolamento {
+        width: 300px; /* Largura desejada da lista */
+        height: 200px; /* Altura desejada da lista */
+        overflow-y: scroll; /* Ativar a rolagem vertical */
+        border: 1px solid #ccc; /* Estilo de borda opcional */
+        padding: 10px; /* Espaçamento interno opcional */
+        }
+
+        /* Estilo para a barra de rolagem */
+        .lista-com-rolamento::-webkit-scrollbar {
+        width: 8px; /* Largura do scroll */
+        }
+
+        .lista-com-rolamento::-webkit-scrollbar-track {
+        background: #f1f1f1; /* Cor do track (fundo) */
+        }
+
+        .lista-com-rolamento::-webkit-scrollbar-thumb {
+        background: #888; /* Cor do thumb (scroll) */
+        }
+        </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5 text-center">
+                <img src="/static/pocket.png" class="img-fluid" alt="Imagem responsiva">
+                <h1>RESTAURANTE</h1>
+                <p>Pedidos<p>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="lista-com-rolamento">
+            <ul id="lista-itens">
+            {% for restaurant in restaurants %}
+                <li>{{ restaurant.name }} <button onclick="location.href='/orders_management/{{ restaurant.id }}/'" class="btn btn-primary btn-block">Entrar</button></li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
