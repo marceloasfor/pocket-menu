@@ -21,20 +21,18 @@ from rest_framework import routers
 from user.views import UserViewSet
 from restaurant import views as restaurant_views
 from table.views import TableViewSet
+from order import views as order_views
 
 router = routers.DefaultRouter()
 router.register(r'user', UserViewSet)
 router.register(r'restaurant', restaurant_views.RestaurantViewSet)
-router.register(r'table', TableViewSet)
 router.register(r'item', restaurant_views.ItemViewSet)
 router.register(r'itemcategory', restaurant_views.ItemCategoryViewSet)
 
 urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
-    # path('', include('home.urls')),
     path('admin/', admin.site.urls, name="admin"),
     path('', include(router.urls)),
     path('', include('table.urls')),
-    # path('', include('restaurant.urls')),
-    # path('api-token-auth', views.obtain_auth_token),
+    path('order/', order_views.OrderView.as_view(), name='order'),
 ]

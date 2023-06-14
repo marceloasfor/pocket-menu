@@ -1,8 +1,6 @@
 from rest_framework import serializers
 
-from table.models import Table
 from table.serializers import TableSerializer
-from user.serializers import UserSerializer
 from .models import Restaurant, Item, ItemCategory
 
 
