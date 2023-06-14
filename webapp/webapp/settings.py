@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'common',
     'home',
     'user',
+    'order',
     'table',
     'restaurant',
 ]
