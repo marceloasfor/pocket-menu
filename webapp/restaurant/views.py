@@ -30,6 +30,16 @@ def show_tables(restaurant_id: int) -> HttpResponse:
     """
     return redirect('tables', restaurant_id=restaurant_id)
 
+def order_management(request: HttpRequest) -> HttpResponse:
+    restaurants = Restaurant.objects.all()
+    context = {'restaurants': restaurants}
+    return render(request=request, template_name='orders_management.html', context=context)
+
+def restaurant_login(request: HttpRequest) -> HttpResponse:
+    restaurants = Restaurant.objects.all()
+    context = {'restaurants': restaurants}
+    return render(request=request, template_name='restaurant_login.html', context=context)
+
 
 class RestaurantViewSet(viewsets.ModelViewSet):
     queryset = Restaurant.objects.all()

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Página de Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+
+    <style>
+        body {
+        background-image: url('/static/copy-space-italian-food-ingredients_23-2148551732.avif');
+        background-repeat: no-repeat;
+        background-size: cover;
+        }
+
+        .fundo-preto {
+          background-color: black;
+        }
+        .texto-branco {
+        color: white;
+        }
+        .titulo-restaurante {
+        font-family: "Arial", sans-serif;
+        font-size: 36px;
+        /* Outras propriedades de estilo desejadas */
+        }
+      </style>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center">
+                <img src="/static/pocket.png" class="img-fluid" alt="Imagem responsiva">
+                <h1 class="titulo-restaurante">RESTAURANTE</h1>
+                <form action="/login" method="POST" id="loginForm">
+                    <div class="form-group">
+                        <label for="username">Usuário:</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Digite seu usuário">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Senha:</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Digite sua senha">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+                </form>
+                <hr>
+                <p class="text-center">Não tem uma conta? <a href="#" data-toggle="modal" data-target="#signupModal">Crie uma agora!</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Cadastro -->
+    <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signupModalLabel">Criar Novo Usuário</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/signup" method="POST">
+                        <div class="form-group">
+                            <label for="newUsername">Novo Usuário:</label>
+                            <input type="text" class="form-control" id="newUsername" name="newUsername" placeholder="Digite o novo usuário">
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">Nova Senha:</label>
+                            <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Digite a nova senha">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Criar Conta</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    // Realizar autenticação do usuário
+    var username = document.getElementById("username").value;
+    var password = document.getElementById("password").value;
+
+    // Exemplo: verificar se o usuário e senha correspondem a um usuário existente
+    var isUserAuthenticated = authenticateUser(username, password);
+
+    if (isUserAuthenticated) {
+        // Redirecionar para a página home.html
+        window.location.href = "orders_management";
+    } else {
+        // Exibir mensagem de erro, usuário não autenticado
+        alert("Usuário e/ou senha inválidos");
+    }
+    });
+
+    function authenticateUser(username, password) {
+        // Lógica de autenticação do usuário
+        // Verificar se o usuário existe e a senha está correta
+        // Retornar true se o usuário estiver autenticado, false caso contrário
+
+        // Exemplo:
+        if (username === "usuario" && password === "senha") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    </script>
+
+</body>
+</html>
