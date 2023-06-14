@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpRequest, HttpResponse
 from rest_framework import viewsets
 from rest_framework import permissions
@@ -37,7 +37,12 @@ def order_management(request: HttpRequest, restaurant_id: int) -> HttpResponse:
     for order in orders_qs:
         for item in order.order_items.all():
             items.append(f'{item.item_name} - {order.table.number}')
-    context = {'items': items}
+
+    restaurant = get_object_or_404(Restaurant, id=restaurant_id)
+    context = {
+        'items': items,
+        'restaurant_name': restaurant.name
+    }
     return render(request=request, template_name='orders_management.html', context=context)
 
 def restaurant_login(request: HttpRequest) -> HttpResponse:
