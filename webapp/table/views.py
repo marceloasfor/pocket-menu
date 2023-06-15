@@ -141,7 +141,7 @@ class UsersInTableList(APIView):
         user = User.objects.get_or_create(username=username)
         token = Token.objects.get_or_create(user=user[0])
         if Table.objects.filter(users__in=[user[0].id]).exists():
-            table_id = Table.objects.get(users__in=[user[0].id]).id
+            Table.objects.get(users__in=[user[0].id]).id
             resp = Response({'token': token[0].key}, status=status.HTTP_200_OK)
             resp.set_cookie('name', username)
             return resp
