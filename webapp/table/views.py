@@ -142,7 +142,9 @@ class UsersInTableList(APIView):
         token = Token.objects.get_or_create(user=user[0])
         if Table.objects.filter(users__in=[user[0].id]).exists():
             table_id = Table.objects.get(users__in=[user[0].id]).id
-            return Response({'error': f'username already in a table ({table_id})'}, status=status.HTTP_400_BAD_REQUEST)
+            resp = Response({'token': token[0].key}, status=status.HTTP_200_OK)
+            resp.set_cookie('name', username)
+            return resp
 
         table[0].users.add(user[0].id)
         resp = Response({'token': token[0].key}, status=status.HTTP_201_CREATED)

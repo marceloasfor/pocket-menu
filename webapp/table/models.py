@@ -30,7 +30,7 @@ class Table(models.Model):
     verification_code = models.PositiveIntegerField(
         blank=True,
         null=True,
-        verbose_name='Número da Mesa',
+        verbose_name='Código de Verificação',
         unique=True,
     )
 
@@ -38,6 +38,9 @@ class Table(models.Model):
         ordering = ['number']
         verbose_name = 'Mesa'
         verbose_name_plural = 'Mesas'
+
+    def __str__(self):
+        return f'{self.number}'
 
     def __unicode__(self):
         return f'{self.number}'

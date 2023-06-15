@@ -21,6 +21,11 @@ class OrderItem(models.Model):
         verbose_name="Nome do Prato/Produto"
     )
     item_id = models.IntegerField(default=0, null=True)
+    confirmed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.item_name
+
 
 class Order(models.Model):
     class STATUS:
@@ -44,13 +49,17 @@ class Order(models.Model):
     )
     order_items = models.ManyToManyField(OrderItem, blank=True, editable=False)
 
+    def __str__(self):
+        return self.user_id.username
+
     @classmethod
     def active_orders_for_restaurant(cls, restaurant_id):
+        order_items_qs = OrderItem.objects.filter(confirmed=True)
         table_qs = Table.objects.filter(restaurant__in=[restaurant_id])
         orders_qs = cls.objects.filter(
             status=Order.STATUS.CREATED,
             table__in=table_qs,
-        )
+        ).exclude(order_items__in=order_items_qs)
         return orders_qs
 
     @classmethod
