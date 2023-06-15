@@ -41,7 +41,7 @@ export default function Header({ code="", token }:{ code:string, token:string })
                 <div></div>
                 <div></div>
                 <div className='self-center text-white'>
-                    <p>{code}</p>
+                    <p>Seu código de mesa é: {code}</p>
                 </div>
                 <div className={showOptions ? "visible" : "invisible"} >
                     <div className='grid grid-cols-1 gap-4 p-4 absolute left-0 top-16 z-10 content-end'>
