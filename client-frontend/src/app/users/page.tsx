@@ -1,31 +1,34 @@
-import Table from "./table";
-
 import { ModalProvider } from "../contexts/modal";
 import { cookies } from "next/headers";
-import { getAllMenuItems, getAllOrders, getAllUsers } from "../actions";
+import { getAllUsers } from "../actions";
 import Header from "../header";
+import Navigation from "../navigation";
+import Users from "./users";
 
-
-async function getData(restaurant:string, verCode:string, username:string) {
-  return {
-    users: await getAllUsers(verCode) || [],
-    orders: await getAllOrders(verCode) || [],
-    menu: await getAllMenuItems(restaurant) || [],
-    restaurant: restaurant,
-    verificationCode: verCode,
-    username: username
-  };
-}
 
 export default async function Home() {
-  const restaurant = cookies().get("restaurant")?.value || ""
-  const verificationCode = cookies().get("verification_code")?.value || ""
-  const username = cookies().get("username")?.value || ""
-  const users = await getAllUsers(verificationCode) || []
+  const verificationCode = cookies().get("verification_code")?.value || "";
+  const token = cookies().get("token")?.value || "";
+  const res = await getAllUsers(token) || [];
+
+  const { error } = res;
+  if (error) {
+    console.log(token);
+    console.log(error);
+    return null;
+  }
+
+  const users = res;
+
   return (
     <ModalProvider>
-      <Header code={verificationCode} username={username} />
-      <Table users={users} verificationCode={verificationCode} />
+      <Header code={verificationCode} token={token} />
+      <div className='h-screen'>
+        <div className='overflow-y-auto pb-20 pt-16 self-start'>
+          <Users users={users} />
+        </div>
+      </div>
+      <Navigation />
     </ModalProvider>
   );
 }

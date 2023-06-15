@@ -1,6 +1,8 @@
+// "use client";
+
 import { Order } from "../interfaces/order";
 
-function OrderCard({ order=null }:{ order:Order|null }) {
+function OrderCard({ order }:{ order:Order }) {
     if (order === null) return null
     return (
         <div className='bg-indigo-500 rounded-lg m-4 flex justify-between'>

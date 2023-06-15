@@ -1,22 +1,34 @@
-import Table from "./table";
-
-import { fetchMenu, fetchOrders, fetchUsers } from "../utils/fetch";
 import { ModalProvider } from "../contexts/modal";
-import { DataProvider } from "../contexts/data";
-import { TokenProvider } from "../contexts/token";
 import { getAllOrders } from "../actions";
 import { cookies } from "next/headers";
 import Header from "../header";
+import Orders from "./orders";
+import Navigation from "../navigation";
 
 export default async function Home() {
-  const restaurant = cookies().get("restaurant")?.value || ""
   const verificationCode = cookies().get("verification_code")?.value || ""
-  const username = cookies().get("username")?.value || ""
-  const orders = await getAllOrders(verificationCode) || []
+  const token = cookies().get("token")?.value || "";
+  const res = await getAllOrders(token) || []
+
+  const { error } = res;
+  if (error) {
+    console.log(token);
+    console.log(error);
+    return null;
+  }
+
+  console.log("RES: ");
+  console.log(res);
+  const orders = res.items;
   return (
     <ModalProvider>
-      <Header code={verificationCode} username={username} />
-      <Table orders={orders} verificationCode={verificationCode} />
+      <Header code={verificationCode} token={token} />
+      <div className='h-screen'>
+        <div className='overflow-y-auto pb-20 pt-16 self-start'>
+          <Orders orders={orders} />
+        </div>
+      </div>
+      <Navigation />
     </ModalProvider>
   );
 }
