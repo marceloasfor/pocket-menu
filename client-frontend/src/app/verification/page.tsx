@@ -14,10 +14,10 @@ export default function VerificationForm() {
         router.push(`/login?r=1&c=${code}`);
     }
     return (
-        <div className="flex h-screen">
+        <div className="bg-gray-900 text-white flex h-screen">
             <form method="post" onSubmit={handleSubmit} className="grid text-center justify-center m-auto gap-4">
                 <label>Verfication code:</label>
-                <input type="text" name="verification-code" defaultValue="" onChange={handleChange} className="shadow rounded-md text-center" />
+                <input type="text" name="verification-code" defaultValue="" onChange={handleChange} className="shadow rounded-md text-center text-black" />
                 <input type="submit" value="Verify"></input>
             </form>
         </div>

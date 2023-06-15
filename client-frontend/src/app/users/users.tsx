@@ -1,10 +1,13 @@
 import { User } from "../interfaces/user";
+import Image from 'next/image'
+import userImage from "../../../public/user.png"
 
 function UserCard({ user=null }:{ user:User|null }) {
     if (user === null) return null
     return (
-        <div className='bg-indigo-500 rounded-lg m-4 grid justify-center text-center md:flex md:justify-start p-4'>
-            <div className="bg-black m-8 rounded-full h-32 w-32"></div>
+        <div className='bg-gray-900 rounded-lg m-4 grid justify-center text-center md:flex md:justify-start p-4'>
+            {/* <div className="bg-black m-8 rounded-full h-32 w-32"></div> */}
+            <Image src={userImage} width={250} height={250} alt="User picture placeholder" />
             <h1 className="self-center">{user.username}</h1>
         </div>
     )

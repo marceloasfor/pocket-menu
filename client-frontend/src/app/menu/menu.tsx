@@ -11,14 +11,15 @@ async function orderItem(token:string, id:number) { // TODO: check if this is no
 function MenuItemCard({ item=null, token }:{ item:MenuItem|null, token:string }) {
   if (item === null) return null
   return (
-    <div className='bg-indigo-500 rounded-lg m-4 flex justify-between'>
-      <div className="bg-white flex m-4">
+    <div className='bg-amber-500 rounded-lg m-4 flex justify-between'>
+      <div className="flex m-4">
         <h1 className="m-4">({item.id})</h1>
         <h1 className="m-4">{item.name}</h1>
       </div>
       <div className="flex flex-row m-4">
-        <h1 className="bg-white m-4 self-center">R${item.price}</h1>
-        <button className="bg-white p-4" onClick={() => {orderItem(token, item.id)}}>Order</button>
+        {/* <h1 className="m-4 self-center">R${item.price?.toFixed(2)}</h1> */}
+        <h1 className="m-4 self-center">R${item.price}</h1>
+        <button className="bg-amber-300 p-4 rounded-lg" onClick={() => {orderItem(token, item.id)}}>Order</button>
       </div>
     </div>
   )

@@ -25,9 +25,20 @@ export default function Header({ code="", token }:{ code:string, token:string })
     return (
         <div>
             {modal}
-            <div className='bg-white fixed flex flex-row gap-4 p-4 inset-x-0 top-0 z-10 justify-between'>
+            <div className='bg-gray-900 fixed flex flex-row gap-4 p-4 inset-x-0 top-0 z-10 justify-between'>
                 <button className='bg-indigo-500 h-10 w-10 rounded-full' onClick={toggleOptions}>...</button>
-                <div className='self-center justify-end'>
+                {/* Provavelmente a maior gambiarra da minha vida */}
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div className='self-center text-white'>
                     <p>{code}</p>
                 </div>
                 <div className={showOptions ? "visible" : "invisible"} >

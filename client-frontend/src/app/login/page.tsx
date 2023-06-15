@@ -26,10 +26,10 @@ export default function LoginForm() {
         }
     }
     return (
-        <div className="flex h-screen">
+        <div className="bg-gray-900 text-white flex h-screen">
             <form method="post" onSubmit={handleSubmit} className="grid text-center justify-center m-auto gap-4">
                 <label>Name:</label>
-                <input type="text" id="input" name="input" defaultValue="" className="shadow rounded-md text-center" />
+                <input type="text" id="input" name="input" defaultValue="" className="shadow rounded-md text-center text-black" />
                 <input type="submit" value="Enter"></input>
             </form>
         </div>

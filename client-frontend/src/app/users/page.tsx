@@ -23,7 +23,7 @@ export default async function Home() {
   return (
     <ModalProvider>
       <Header code={verificationCode} token={token} />
-      <div className='h-screen'>
+      <div className='bg-gray-900 h-screen text-white'>
         <div className='overflow-y-auto pb-20 pt-16 self-start'>
           <Users users={users} />
         </div>
