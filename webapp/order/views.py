@@ -10,6 +10,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from django_eventstream import send_event, get_current_event_id
+
 from order.models import Order
 from restaurant.models import Item
 from table.models import Table
@@ -98,9 +100,13 @@ class OrderView(APIView):
 
         order = Order.active_orders_for_user(user=user)
         if not order:
-            order_obj = Order.create_order(user=user, item=item[0], table=table[0])
+            order = Order.create_order(user=user, item=item[0], table=table[0])
         else:
             order.add_item(item=item[0])
             order.save()
 
+        orders = [f'{item.item_name} - {order.table.number}' for item in order.order_items.all()]
+        print(orders)
+        send_event('orders', 'new-order', orders)
+        
         return Response({'Success': 'Item added to the order'}, status=status.HTTP_201_CREATED)

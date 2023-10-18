@@ -87,7 +87,7 @@ class Order(models.Model):
         order.save()
         order.order_items.add(order_item)
         order.save()
-        return order.id
+        return order
 
     def add_item(self, item):
         order_item = OrderItem(

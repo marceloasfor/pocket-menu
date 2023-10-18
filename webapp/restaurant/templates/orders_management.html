@@ -46,18 +46,41 @@
     <div class="row justify-content-center">
         <div class="lista-com-rolamento">
             <ul id="lista-itens">
-            {% for name in items %}
-              <li>{{ name }} <button onclick="removerItem(this)">Remover</button></li>
-            {% endfor %}
+            
             </ul>
         </div>
     </div>
 
     <script>
-    function removerItem(botao) {
-      var item = botao.parentNode;
-      item.remove();
-    }
+        const eventList = document.querySelector("ul");
+
+        function create_li(item) {
+            const newListItem = document.createElement("li");
+            const newbutton = document.createElement("button");
+
+            newListItem.textContent = item;
+
+            newbutton.textContent = "Remover";
+            newbutton.addEventListener('click', function() {
+                var item = this.parentNode;
+                item.remove();
+            }, false);
+            
+            newListItem.appendChild(newbutton);
+            eventList.appendChild(newListItem);
+        }
+
+        const sse = new EventSource("http://localhost:8000/orders/stream/");
+        sse.addEventListener("new-order", (e) => {
+            eventList.innerHTML = ""
+            items = JSON.parse(e.data);
+            items.forEach(create_li);
+        });
+
+        function removerItem(botao) {
+            var item = botao.parentNode;
+            item.remove();
+        }
     </script>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
