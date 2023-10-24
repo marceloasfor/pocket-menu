@@ -27,8 +27,6 @@ function LoginForm() {
         } else {
             setCookie(null, "restaurant", restaurant);
             setCookie(null, "verification_code", table);
-            // setCookie(null, "token", token);
-            // setCookie(null, "username", name);
 
             name && setUsername(name);
             token && setToken(token);
