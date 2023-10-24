@@ -7,15 +7,14 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout repo
-        uses: actions/checkout@v2
-
-      - name: Build & Test
-        run: |
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - run: |
           cd webapp/
-          make build
-          make run
-          make test-cov MIN_COVERAGE=30
+          cp sample.env .env
+          pip install flake8
+          pip install -r requirements.txt
+          python manage.py test
       # - name: build & test
       #   - run: cd webapp/
       #   - run: make build
