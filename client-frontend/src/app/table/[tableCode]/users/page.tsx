@@ -17,8 +17,8 @@ export default function UsersPage() {
 
   const [tableUsers, setTableUsers] = useState([]);
 
-  var uri = 'http://localhost:8000/table/' + verificationCode + '/stream/';
-  var ssEvents = new EventSource(
+  const uri = 'http://localhost:8000/table/' + verificationCode + '/stream/';
+  const ssEvents = new EventSource(
     uri, { withCredentials: false }
   );
 
@@ -36,7 +36,9 @@ export default function UsersPage() {
       setTableUsers(res);
     };
     getFetchUsers();
+  }, []);
 
+  useEffect(() => {
     // listen to login event
     ssEvents.addEventListener("join-table", (e:any) => {
       const user = JSON.parse(e.data);
@@ -53,7 +55,7 @@ export default function UsersPage() {
         hideProgressBar: false,
         toastId: 'join',
       });
-      setTableUsers([...users, user]);
+      setTableUsers((prevUsers) => [...prevUsers, user]);
     });
 
     ssEvents.addEventListener("leave-table", (e:any) => {
@@ -71,7 +73,7 @@ export default function UsersPage() {
         hideProgressBar: false,
         toastId: 'leave',
       });
-      setTableUsers(tableUsers.filter(item => item !== user));
+      setTableUsers(prevUsers => prevUsers.filter(item => item.id !== user.id));
     });
 
     // listen to open event
@@ -86,7 +88,7 @@ export default function UsersPage() {
     return () => {
       ssEvents.close();
     };
-  }, [tableUsers]);
+  }, []);
 
   return (
       <div className='h-screen text-white'>

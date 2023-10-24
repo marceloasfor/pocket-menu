@@ -61,6 +61,7 @@ function LoginForm() {
                 <button
                     type="submit"
                     className="flex justify-center items-center w-40 btn"
+                    disabled={isLoading}
                 >
                 {isLoading ? (
                     <ClipLoader color="white" size={20} />
