@@ -7,14 +7,22 @@ down:
 build:
 	docker build --no-cache -t pocket-menu-webapp -f Dockerfile .
 
-build-dev:
-	docker build -t pocket-menu-webapp$(VERSION) -f Dockerfile.dev .
+run-db-ci:
+	docker run -d --name pocket-menu-db \
+		-e POSTGRES_PASSWORD=getyourown \
+		-e POSTGRES_DB=pocket_menu_db \
+		-e POSTGRES_USER=postgres \
+		-e PGDATA=/pgdata \
+		postgres:15.3-alpine
+
+# build-dev:
+# 	docker build -t pocket-menu-webapp$(VERSION) -f Dockerfile.dev .
 
 run:
 	docker run --name pocket-menu-webapp --detach --tty pocket-menu-webapp
 
-run-dev:
-	docker run --name pocket-menu-webapp --detach $(EXTRA_ARGS) pocket-menu-webapp$(VERSION)
+# run-dev:
+# 	docker run --name pocket-menu-webapp --detach $(EXTRA_ARGS) pocket-menu-webapp$(VERSION)
 
 check:
 	docker exec -t web bash -c "pwd && ls -la"

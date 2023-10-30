@@ -35,7 +35,7 @@ export default function Page() {
       if (error) {
         console.log(token);
         console.log(error);
-      }    
+      }
 
       const menuItemsRes = res;
       setMenuItems(menuItemsRes);
@@ -48,12 +48,12 @@ export default function Page() {
   }, []);
 
   const [isClient, setIsClient] = useState(false)
- 
+
   useEffect(() => {
     setIsClient(true)
   }, [])
-  
-  
+
+
   const [categories, setCategories] = useState(allCategories);
 
   const filterItems = category => {
