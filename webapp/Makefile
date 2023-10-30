@@ -7,14 +7,14 @@ down:
 build:
 	docker build --no-cache -t pocket-menu-webapp -f Dockerfile .
 
-# build-dev:
-# 	docker build -t web-dev$(VERSION) -f Dockerfile.dev .
+build-dev:
+	docker build -t pocket-menu-webapp$(VERSION) -f Dockerfile.dev .
 
 run:
 	docker run --name pocket-menu-webapp --detach --tty pocket-menu-webapp
 
-# run-dev:
-# 	docker run --name web --detach $(EXTRA_ARGS) web-dev$(VERSION)
+run-dev:
+	docker run --name pocket-menu-webapp --detach $(EXTRA_ARGS) pocket-menu-webapp$(VERSION)
 
 check:
 	docker exec -t web bash -c "pwd && ls -la"
