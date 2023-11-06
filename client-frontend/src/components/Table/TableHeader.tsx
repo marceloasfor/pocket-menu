@@ -1,6 +1,5 @@
 "use client";
 
-import { useUser } from "@/contexts/UserContext";
 import React, { useState } from "react";
 import AlertDialog from "../dialogs/alert";
 import Payment from "../dialogs/payment";

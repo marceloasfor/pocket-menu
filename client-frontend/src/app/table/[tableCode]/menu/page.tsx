@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 import { getAllMenuItems } from "@/app/actions";
 import Menu from "@/components/Menu/Items";
 import Categories from "@/components/Menu/Categories";
+import { useSelector } from 'react-redux';
 
 export default function Page() {
   const [menuItems, setMenuItems] = useState([]);
@@ -15,6 +16,16 @@ export default function Page() {
   const verificationCode = Cookies.get("verification_code") || "";
   const restaurant = Cookies.get("restaurant") || "";
   const token = Cookies.get("token") || "";
+
+  const cart = useSelector((state) => state.cart)
+
+  const getTotalQuantity = () => {
+    let total = 0
+    cart.forEach(item => {
+      total += item.quantity
+    })
+    return total
+  }
 
   useEffect(() => {
     const getItems = async () => {
@@ -50,6 +61,7 @@ export default function Page() {
 
   return (
     <main>
+      <p>{getTotalQuantity() || 0}</p>
       <section className="my-12 max-w-screen-xl mx-auto px-6">
         <Categories categories={allCategories} filterItems={filterItems} />
         <Menu items={menuItems} token={token} />
