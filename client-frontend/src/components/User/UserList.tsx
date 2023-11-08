@@ -1,6 +1,9 @@
+
 import { User } from "@/interfaces/user";
 import Image from 'next/image'
 import userImage from "../../../public/user.png"
+import { useEffect, useState } from "react";
+import { SkeletonCard } from "./SkeletonCard";
 
 function UserCard({ user=null }:{ user:User|null }) {
     if (user === null) return null
@@ -16,13 +19,14 @@ function UserCard({ user=null }:{ user:User|null }) {
 
 export default function Users({ users }:{ users:User[] }) {
     if (users.length === 0) return null;
-    
-    const userCards: React.JSX.Element[] = [];
-    users.forEach((u, i) => userCards.push(<UserCard key={i} user={u} />));
 
     return (
-        <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 px-10">
-            {userCards}
-        </div>
+        <>
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 px-10">
+                {users.map((user: User) => (
+                    <UserCard key={user.username} user={user} />
+                ))}
+            </div>
+        </>
     );
 }

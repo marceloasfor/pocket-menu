@@ -46,6 +46,12 @@ export default function Page() {
 
     return () => {}
   }, []);
+
+  const [isClient, setIsClient] = useState(false)
+ 
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
   
   
   const [categories, setCategories] = useState(allCategories);
@@ -61,7 +67,7 @@ export default function Page() {
 
   return (
     <main>
-      <p>{getTotalQuantity() || 0}</p>
+      <p>{isClient ? getTotalQuantity() : '0'}</p>
       <section className="my-12 max-w-screen-xl mx-auto px-6">
         <Categories categories={allCategories} filterItems={filterItems} />
         <Menu items={menuItems} token={token} />
