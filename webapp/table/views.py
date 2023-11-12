@@ -9,7 +9,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from django_eventstream import send_event, get_current_event_id
+from django_eventstream import send_event
 
 from .models import Table
 from .serializers import TableSerializer
@@ -126,17 +126,22 @@ class UsersInTableList(APIView):
 
     def post(self, request, format=None):
         body = json.loads(request.body)
+
         verification_code = body.get('verification_code')
         if not verification_code:
-            return Response({'error': 'verification_code not provided'}, status=status.HTTP_403_FORBIDDEN)
+            return Response({'error': 'Verification code not provided'}, status=status.HTTP_403_FORBIDDEN)
+        
+        username = body.get('username')
+        if not username:
+            return Response({'error': 'Username not provided'}, status=status.HTTP_400_BAD_REQUEST)
 
         table = Table.objects.filter(verification_code=verification_code)
         if not table.exists():
             return Response({'error': 'Table not found'}, status=status.HTTP_404_NOT_FOUND)
-
-        username = body.get('username')
-        if not username:
-            return Response({'error': 'username not provided'}, status=status.HTTP_400_BAD_REQUEST)
+        # elif not table[0].available:
+        #     return Response({'error': 'Table not available'}, status=status.HTTP_409_CONFLICT)
+        # elif table[0].capacity <= table[0].users.count():
+        #     return Response({'error': 'Table is full'}, status=status.HTTP_409_CONFLICT)
 
         user = User.objects.get_or_create(username=username)
         token = Token.objects.get_or_create(user=user[0])
@@ -146,15 +151,11 @@ class UsersInTableList(APIView):
             resp.set_cookie('name', username)
             return resp
 
-        # last_id = get_current_event_id(['table-{}'.format(table[0].number)])
-        # print(last_id)
-
         table[0].users.add(user[0].id)
         resp = Response({'token': token[0].key, 'restaurant': table[0].restaurant.id}, status=status.HTTP_201_CREATED)
         resp.set_cookie('name', username)
 
-        # Dispara o evento
-        # users = [{"username": user.username} for user in table[0].users.all()]
+        # Dispara o evento de login de um usuario
         send_event('table-{}'.format(table[0].number), 'join-table', {'id': user[0].id, 'username': user[0].username})
 
         return resp

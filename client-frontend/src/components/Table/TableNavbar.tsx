@@ -10,8 +10,8 @@ export default async function TableNavbar() {
   const pathname = usePathname();
   
   return (
-    <div className='fixed bottom-0 left-0 right-0 z-50 w-full h-16 bg-white border-t border-gray-200'>
-      <div className='grid h-full max-w-lg grid-cols-4 mx-auto font-medium'>
+    <div className='fixed bottom-0 left-0 right-0 w-full h-16 bg-white border-t border-gray-200'>
+      <div className='grid grid-cols-3 h-full max-w-lg mx-auto font-medium'>
   
         <Link 
           className={`inline-flex flex-col items-center justify-center px-5 group ${ pathname == `/table/${tableCode}/users` ? "active_navlink" : "navlink" }`}

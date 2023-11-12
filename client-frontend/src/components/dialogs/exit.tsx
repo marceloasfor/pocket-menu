@@ -15,30 +15,35 @@ export default function ExitDialog({ setModal, token }:{ setModal:Dispatch<SetSt
     
     const exit = async (token:string) => {
         setLoading(true)
-        console.log("exit token: " + token)
-        const res = await exitTable(token) || [];
 
-        const { error } = res;
-        if (error) {
-          console.log(token);
-          console.log(error);
-          return null;
-        };
+        try {
+            console.log("exit token: " + token)
+            const res = await exitTable(token) || [];
 
-        dispatch(resetCart());
+            const { error } = res;
+            if (error) {
+                throw new Error(error);
+            };
 
-        destroyCookie({}, "restaurant", {path: `/`});
-        destroyCookie({}, "verification_code", {path: `/`});
-        destroyCookie({}, "token", {path: '/'});
-        destroyCookie({}, "username", {path: '/'});
+            dispatch(resetCart());
 
-        setLoading(false);
-        router.push(`/`);
+            destroyCookie({}, "restaurant", {path: `/`});
+            destroyCookie({}, "verification_code", {path: `/`});
+            destroyCookie({}, "token", {path: '/'});
+            destroyCookie({}, "username", {path: '/'});
+
+            router.push(`/`);
+        } catch (err) {
+            console.error(err);
+            throw err
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
-        <div className="grid absolute inset-0 h-screen w-screen items-center z-30">
-            <div className="bg-white grid gap-4 justify-items-center text-center m-auto p-12">
+        <div className="backdrop-brightness-50 bg-white/30 grid absolute inset-0 h-screen w-screen items-center z-50">
+            <div className="bg-white grid gap-4 justify-items-center text-center m-auto p-12 rounded-sm">
                 <p>Tem certeza que deseja sair da mesa virtual?</p>
                 <div className="flex gap-4">
                     <button 

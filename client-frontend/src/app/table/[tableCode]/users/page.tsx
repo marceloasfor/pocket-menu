@@ -14,6 +14,7 @@ export default function UsersPage() {
   const verificationCode = Cookies.get("verification_code") || "";
   const token = Cookies.get("token") || "";
   const username = Cookies.get("username") || "";
+  const [, setError] = useState();
 
   const [tableUsers, setTableUsers] = useState([]);
 
@@ -24,16 +25,21 @@ export default function UsersPage() {
 
   useEffect(() => {
     const getFetchUsers = async () => {
-      const res = await getAllUsers(token);
+      try {
+        const res = await getAllUsers(token);
+        const { error } = res;
 
-      const { error } = res;
-      if (error) {
-        console.log(token);
-        console.log(error);
-        return null;
+        if (error) {
+          throw new Error(error)
+        }
+
+        setTableUsers(res);
+      } catch (err) {
+        console.error(err)
+        setError(() => {
+          throw err;
+        });
       }
-      
-      setTableUsers(res);
     };
     getFetchUsers();
   }, []);
