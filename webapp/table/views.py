@@ -9,6 +9,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from django_eventstream import send_event, get_current_event_id
+
 from .models import Table
 from .serializers import TableSerializer
 
@@ -33,7 +35,6 @@ class TableViewSet(viewsets.ModelViewSet):
             self.queryset = self.queryset.filter(number=number)
 
         return self.queryset
-
 
 class TableVerification(APIView):
     def get(self, request, id=None, format=None):
@@ -71,7 +72,6 @@ class AllTables(APIView):
             )
         return Response(data)
 
-
 class TableDetail(APIView):
     def get(self, request, id=None, format=None):
         if not id:
@@ -95,7 +95,6 @@ class TableDetail(APIView):
         },
         return Response(data)
 
-
 class UsersInTableList(APIView):
     def get(self, request, format=None):
         try:
@@ -117,11 +116,12 @@ class UsersInTableList(APIView):
                 context = {
                     'id': user.id,
                     'username': user.username,
-                    'first_name': user.first_name,
-                    'last_name': user.last_name,
-                    'email': user.email,
+                    # 'first_name': user.first_name,
+                    # 'last_name': user.last_name,
+                    # 'email': user.email,
                 }
                 data.append(context)
+
         return Response(data)
 
     def post(self, request, format=None):
@@ -146,9 +146,17 @@ class UsersInTableList(APIView):
             resp.set_cookie('name', username)
             return resp
 
+        # last_id = get_current_event_id(['table-{}'.format(table[0].number)])
+        # print(last_id)
+
         table[0].users.add(user[0].id)
-        resp = Response({'token': token[0].key}, status=status.HTTP_201_CREATED)
+        resp = Response({'token': token[0].key, 'restaurant': table[0].restaurant.id}, status=status.HTTP_201_CREATED)
         resp.set_cookie('name', username)
+
+        # Dispara o evento
+        # users = [{"username": user.username} for user in table[0].users.all()]
+        send_event('table-{}'.format(table[0].number), 'join-table', {'id': user[0].id, 'username': user[0].username})
+
         return resp
 
     def delete(self, request, format=None):
@@ -163,5 +171,7 @@ class UsersInTableList(APIView):
         table = Table.objects.filter(users__in=[user.id])
         if table:
             table[0].users.remove(user)
+            # users = [{"username": user.username} for user in table[0].users.all()]
+            send_event('table-{}'.format(table[0].number), 'leave-table', {'id': user.id, 'username': user.username})
             return Response({'Success': f'{user.username} removed from table'}, status=status.HTTP_200_OK)
         return Response({'Error': f'{user.username} Not in any table'}, status=status.HTTP_404_NOT_FOUND)

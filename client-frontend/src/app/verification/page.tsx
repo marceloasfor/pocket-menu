@@ -1,25 +1,29 @@
-"use client";
+import Footer from "@/components/Home/Footer";
+import LoginForm from "@/components/Home/LoginForm";
+import Navbar from "@/components/Home/Navbar";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-
-
-export default function VerificationForm() {
-    const router = useRouter();
-    const [code, setCode] = useState("");
-
-    const handleChange = (e: any) => setCode(e.target.value);
-    const handleSubmit = async (e: any) => {
-        e.preventDefault();
-        router.push(`/login?r=1&c=${code}`);
-    }
-    return (
-        <div className="bg-gray-900 text-white flex h-screen">
-            <form method="post" onSubmit={handleSubmit} className="grid text-center justify-center m-auto gap-4">
-                <label>Insira o código de mesa:</label>
-                <input type="text" name="verification-code" defaultValue="" onChange={handleChange} className="shadow rounded-md text-center text-black" />
-                <input type="submit" value="Entrar"></input>
-            </form>
+export default function Home() {
+  return (
+    <main>
+      <Navbar />
+      <div className="flex px-5 pt-36 pb-12 mb-12 lg:px-36">
+        <div className="flex flex-col gap-4 w-full xl:pr-32 lg:w-1/2">
+          <div className="flex flex-col gap-5">
+            <p className=" text-[72px] leading-[70px] lg:text-[90px] text-transparent font-medium lg:leading-[95px] tracking-tight bg-gradient bg-clip-text">
+              POCKET MENU
+              <br /> 
+            </p>
+            <p className="text-lg leading-7 text-gray-600">
+              Inform the table and your username:
+            </p>
+          </div>
+          <LoginForm />
         </div>
-    )
+        <div className="object-cover w-0 lg:w-1/2">
+          <img src="/images/image.png" alt="hero" />
+        </div>
+      </div>
+      <Footer />
+    </main>
+  );
 }

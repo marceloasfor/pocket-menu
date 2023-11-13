@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'order',
     'table',
     'restaurant',
+
+    'channels',
+    'django_eventstream',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +52,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    'django_grip.GripMiddleware',
 ]
 
 ROOT_URLCONF = 'webapp.urls'
@@ -70,6 +75,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'webapp.wsgi.application'
+ASGI_APPLICATION = 'webapp.asgi.application'
 
 
 # Database
@@ -81,6 +87,20 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': '',
+#         'USER': '',
+#         'PASSWORD': '',
+#         'HOST': '',
+#         'PORT': 5432
+#     }
+# }
+EVENTSTREAM_ALLOW_ORIGIN = 'http://localhost:3000'
+EVENTSTREAM_ALLOW_CREDENTIALS = False
+EVENTSTREAM_ALLOW_HEADERS = 'Cache-Control'
 
 
 # Password validation
