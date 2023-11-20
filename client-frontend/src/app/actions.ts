@@ -58,3 +58,13 @@ export async function getAllMenuItems(restaurant:string) {
     const result = await res.json();
     return result;
 }
+
+export async function sendOrder(token:string, items:any) {
+    const res = await fetch('http://127.0.0.1:8000/order/', {
+        method: 'POST',
+        headers: { "Authorization" : `Bearer ${token}` },
+        body: JSON.stringify({ items: items }),
+    });
+    const result = await res.json();
+    return result;
+}

@@ -3,7 +3,7 @@
 import React, { createContext, useReducer, useEffect, useContext, useState } from "react";
 import { ssEvents } from "@/config";
 // import { getAllUsers } from "../lib";
-import { appReducer } from "@/reducer";
+// import { appReducer } from "@/reducer";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import { useLocalState, useCookieState } from "@/utils/persistence"
@@ -24,7 +24,7 @@ export default function TableProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [appState, appDispatch] = useReducer(appReducer, initialState);
+  // const [appState, appDispatch] = useReducer(appReducer, initialState);
 
   const token = Cookies.get("token") || "";
   
@@ -54,7 +54,7 @@ export default function TableProvider({
   }, []);
 
   return (
-    <TableContext.Provider value={{ users, newUser, appState, appDispatch }}>
+    <TableContext.Provider value={{ users, newUser }}>
       {children}
     </TableContext.Provider>
   );

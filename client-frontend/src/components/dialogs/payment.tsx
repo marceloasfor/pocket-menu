@@ -11,7 +11,7 @@ function AppPayment() {
 
 function OutsidePayment({ setModal }:{ setModal:Dispatch<SetStateAction<JSX.Element | null>> }) {
     return (
-        <div className="grid grid-cols-2 gap-4">
+        <div className="bg-white/30 grid grid-cols-2 gap-4">
             <button className="bg-indigo-300 h-10 w-40 rounded-lg" onClick={() => setModal(<AlertDialog message="Um atendente foi chamado para receber o pagamento." setModal={setModal} />)}>PIX</button>
             <button className="bg-indigo-300 h-10 w-40 rounded-lg" onClick={() => setModal(<AlertDialog message="Um atendente foi chamado para receber o pagamento." setModal={setModal} />)}>Crédito</button>
             <button className="bg-indigo-300 h-10 w-40 rounded-lg" onClick={() => setModal(<AlertDialog message="Um atendente foi chamado para receber o pagamento." setModal={setModal} />)}>Débito</button>
@@ -32,7 +32,7 @@ export default function Payment({ setModal }:{ setModal:Dispatch<SetStateAction<
     const [type, setType] = useState(<OutsidePayment setModal={setModal} />)
 
     return (
-        <div className="grid absolute inset-0 h-screen w-screen items-center z-30">
+        <div className="backdrop-brightness-50 grid absolute inset-0 h-screen w-screen items-center z-50">
             <div className="bg-white grid gap-4 justify-items-center text-center m-auto p-12">
                 <div className="flex gap-4">
                     <button className='bg-indigo-500 h-10 w-60 rounded-lg' onClick={() => setType(<OutsidePayment setModal={setModal} />)}>Presencial</button>

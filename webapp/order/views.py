@@ -40,6 +40,7 @@ class ActiveOrderView(APIView):
                     'itemId': item.item_id,
                     'name': item.item_name,
                     'price': item.price,
+                    'quantity': item.quantity,
                 },
             )
         order_obj = {
@@ -65,6 +66,7 @@ class OrderView(APIView):
                         'itemId': item.item_id,
                         'name': item.item_name,
                         'price': item.price,
+                        'quantity': item.quantity,
                     },
                 )
             orders_list.append(
@@ -91,22 +93,38 @@ class OrderView(APIView):
         table = Table.objects.filter(users__in=[user])
 
         body = json.loads(request.body)
+
         item_id = body.get('id')
-        if not item_id:
-            return Response({'error': f'Item id {item_id} not found'}, status=status.HTTP_404_NOT_FOUND)
-        item = Item.objects.filter(id=item_id)
-        if not item:
-            return Response({'error': f'Item {item_id} not found'}, status=status.HTTP_404_NOT_FOUND)
+        item_list = body.get('items')
+
+        if item_id:
+            item = Item.objects.filter(id=item_id)
+            print(type(item[0]))
+            if not item:
+                return Response({'error': f'Item {item_id} not found'}, status=status.HTTP_404_NOT_FOUND)
+            item[0].quantity = 1
+            items = [item[0]]
+        elif item_list:
+            items = []
+            for it in item_list:
+                item = Item.objects.filter(id=it["id"])[0]
+                if not item:
+                    return Response({'error': f'An order item with id {it["id"]} was not found'}, status=status.HTTP_404_NOT_FOUND)
+                item.quantity = it["quantity"]
+                items.append(item)
+        else:
+            return Response({'error': f'Missing item_id or items field'}, status=status.HTTP_400_BAD_REQUEST)
 
         order = Order.active_orders_for_user(user=user)
-        if not order:
-            order = Order.create_order(user=user, item=item[0], table=table[0])
-        else:
-            order.add_item(item=item[0])
-            order.save()
+        for order_item in items:
+            if not order:
+                order = Order.create_order(user=user, item=order_item, table=table[0])
+            else:
+                order.add_item(item=order_item)
+                order.save()
 
-        orders = [f'{item.item_name} - {order.table.number}' for item in order.order_items.all()]
-        print(orders)
-        send_event('orders', 'new-order', orders)
+        user_order = [f'{item.item_name} - {order.table.number}' for item in order.order_items.all()]
+        # print(orders)
+        send_event('orders', 'new-order', user_order)
         
         return Response({'Success': 'Item added to the order'}, status=status.HTTP_201_CREATED)

@@ -14,29 +14,37 @@ export default function UsersPage() {
   const verificationCode = Cookies.get("verification_code") || "";
   const token = Cookies.get("token") || "";
   const username = Cookies.get("username") || "";
+  const [, setError] = useState();
 
   const [tableUsers, setTableUsers] = useState([]);
 
-  var uri = 'http://localhost:8000/table/' + verificationCode + '/stream/';
-  var ssEvents = new EventSource(
+  const uri = 'http://localhost:8000/table/' + verificationCode + '/stream/';
+  const ssEvents = new EventSource(
     uri, { withCredentials: false }
   );
 
   useEffect(() => {
     const getFetchUsers = async () => {
-      const res = await getAllUsers(token);
+      try {
+        const res = await getAllUsers(token);
+        const { error } = res;
 
-      const { error } = res;
-      if (error) {
-        console.log(token);
-        console.log(error);
-        return null;
+        if (error) {
+          throw new Error(error)
+        }
+
+        setTableUsers(res);
+      } catch (err) {
+        console.error(err)
+        setError(() => {
+          throw err;
+        });
       }
-      
-      setTableUsers(res);
     };
     getFetchUsers();
+  }, []);
 
+  useEffect(() => {
     // listen to login event
     ssEvents.addEventListener("join-table", (e:any) => {
       const user = JSON.parse(e.data);
@@ -53,7 +61,7 @@ export default function UsersPage() {
         hideProgressBar: false,
         toastId: 'join',
       });
-      setTableUsers([...users, user]);
+      setTableUsers((prevUsers) => [...prevUsers, user]);
     });
 
     ssEvents.addEventListener("leave-table", (e:any) => {
@@ -71,7 +79,7 @@ export default function UsersPage() {
         hideProgressBar: false,
         toastId: 'leave',
       });
-      setTableUsers(tableUsers.filter(item => item !== user));
+      setTableUsers(prevUsers => prevUsers.filter(item => item.id !== user.id));
     });
 
     // listen to open event
@@ -86,7 +94,7 @@ export default function UsersPage() {
     return () => {
       ssEvents.close();
     };
-  }, [tableUsers]);
+  }, []);
 
   return (
       <div className='h-screen text-white'>

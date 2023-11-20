@@ -74,7 +74,7 @@ class Order(models.Model):
         order_item = OrderItem(
             price=item.price,
             item_name=item.name,
-            quantity=1,
+            quantity=item.quantity,
             item_id=item.id,
         )
         order_item.save()
@@ -93,7 +93,7 @@ class Order(models.Model):
         order_item = OrderItem(
             price=item.price,
             item_name=item.name,
-            quantity=1,
+            quantity=item.quantity,
             item_id=item.id,
         )
         order_item.save()

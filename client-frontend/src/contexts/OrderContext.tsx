@@ -1,20 +1,69 @@
-import React, { useState } from "react";
+'use client';
 
-export const Context = React.createContext();
+import React, { createContext, useReducer } from 'react';
 
-export const Provider = props => {
-  const [items, setItems] = useState({});
+const initialState = {
+  orders: [],
+};
 
-  const updateItem = (type, index, count) => {
-    const key = `${type.toLowerCase()}-${index}`;
-    const amount = Number.isNaN(Number(count)) ? 0 : Number(count);
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'ADD_ITEM':
+      return {
+        ...state,
+        orders: [...state.orders, action.payload],
+      };
 
-    setItems({ ...items, [key]: Number(amount) });
-  };
+    case 'REMOVE_ITEM':
+      return {
+        ...state,
+        orders: state.orders.filter(
+          (item) => item.item_id !== action.payload.item_id
+        ),
+      };
+
+    case 'INCREMENT_ITEM_QTY':
+      return {
+        ...state,
+        orders: state.orders.map((item, idx) =>
+          item.item_id === action.payload.item_id
+            ? {
+              ...item,
+              quantity: item.quantity + 1,
+            }
+            : item
+        ),
+      };
+
+    case 'DECREMENT_ITEM_QTY':
+      return {
+        ...state,
+        orders: state.orders.map((item, idx) =>
+          item.item_id === action.payload.item_id
+            ? {
+              ...item,
+              quantity: item.quantity - 1,
+            }
+            : item
+        ),
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const OrderContext = createContext({
+  state: initialState,
+  dispatch: () => null,
+});
+
+export const OrderContextProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
-    <Context.Provider value={[items, updateItem]}>
-      {props.children}
-    </Context.Provider>
+    <OrderContext.Provider value={{ state, dispatch }}>
+      {children}
+    </OrderContext.Provider>
   );
 };
