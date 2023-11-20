@@ -3,6 +3,7 @@ import TableNavbar from "@/components/Table/TableNavbar";
 import { ModalProvider } from "@/contexts/modal";
 import TableProvider from "@/contexts/TableContext";
 import Providers from "@/redux/providers";
+
 // import "../../globals.css";
 
 export default function RoomLayout({

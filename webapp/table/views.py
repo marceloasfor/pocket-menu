@@ -151,11 +151,15 @@ class UsersInTableList(APIView):
             resp.set_cookie('name', username)
             return resp
 
+        # last_id = get_current_event_id(['table-{}'.format(table[0].number)])
+        # print(last_id)
+
         table[0].users.add(user[0].id)
         resp = Response({'token': token[0].key, 'restaurant': table[0].restaurant.id}, status=status.HTTP_201_CREATED)
         resp.set_cookie('name', username)
 
-        # Dispara o evento de login de um usuario
+        # Dispara o evento
+        # users = [{"username": user.username} for user in table[0].users.all()]
         send_event('table-{}'.format(table[0].number), 'join-table', {'id': user[0].id, 'username': user[0].username})
 
         return resp
