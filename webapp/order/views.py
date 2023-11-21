@@ -17,6 +17,35 @@ from restaurant.models import Item
 from table.models import Table
 
 
+class OrderForUser(APIView):
+    def get(self, request, user_id=None, format=None):
+        '''reply active orders for user'''
+        if not user_id:
+            return Response({'error': 'user_id missing'}, status=status.HTTP_404_NOT_FOUND)
+
+        order = Order.active_orders_for_user(user=user_id)
+        if not order:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
+
+        items = []
+        for item in order.order_items.all():
+            items.append(
+                {
+                    'itemId': item.item_id,
+                    'name': item.item_name,
+                    'price': item.price,
+                    'quantity': item.quantity,
+                },
+            )
+        order_obj = {
+            'order_id': order.id,
+            'user_id': order.user_id.id,
+            'table_id': order.table.id,
+            'table_number': order.table.number,
+            'items': items,
+        }
+        return Response(order_obj, status=status.HTTP_200_OK)
+
 
 class ActiveOrderView(APIView):
     def get(self, request, format=None):
@@ -126,5 +155,5 @@ class OrderView(APIView):
         user_order = [f'{item.item_name} - {order.table.number}' for item in order.order_items.all()]
         # print(orders)
         send_event('orders', 'new-order', user_order)
-        
+
         return Response({'Success': 'Item added to the order'}, status=status.HTTP_201_CREATED)

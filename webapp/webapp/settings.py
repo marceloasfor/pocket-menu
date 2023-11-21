@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-dfjvp091ofn7y=a@(+-)!cbdzb4h8f%mq8b_h#cv60barv0b*p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
+
     'django_grip.GripMiddleware',
 ]
 
@@ -81,10 +81,20 @@ ASGI_APPLICATION = 'webapp.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+DB_NAME = os.environ.get('DB_NAME', 'pocket_menu_db')
+DB_HOST = os.environ.get('DB_HOST', 'db')
+DB_PASSWORD = os.environ.get('DB_PASSWORD', 'getyourown')
+DB_USER = os.environ.get('DB_USER', 'postgres')
+DB_PORT = os.environ.get('DB_PORT', '5432')
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
     }
 }
 
