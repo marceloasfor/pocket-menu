@@ -17,17 +17,30 @@ from restaurant.models import Item
 from table.models import Table
 
 
+headers={
+    "Access-Control-Allow-Origin": "*",
+}
+
 class OrderForUser(APIView):
     def get(self, request, user_id=None, format=None):
         '''reply active orders for user'''
         if not user_id:
-            return Response({'error': 'user_id missing'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'user_id missing'}, status=status.HTTP_400_BAD_REQUEST)
 
         order = Order.active_orders_for_user(user=user_id)
-        if not order:
-            return Response({}, status=status.HTTP_404_NOT_FOUND)
-
         items = []
+        if not order:
+            return Response(
+                {
+                    'user_id': user_id,
+                    'items': items,
+                }, 
+                status=status.HTTP_200_OK,
+                headers={
+                    "Access-Control-Allow-Origin": "*",
+                }
+            )
+
         for item in order.order_items.all():
             items.append(
                 {
@@ -44,7 +57,13 @@ class OrderForUser(APIView):
             'table_number': order.table.number,
             'items': items,
         }
-        return Response(order_obj, status=status.HTTP_200_OK)
+        return Response(
+            order_obj, 
+            status=status.HTTP_200_OK,
+            headers={
+                "Access-Control-Allow-Origin": "*",
+            }
+        )
 
 
 class ActiveOrderView(APIView):
@@ -54,15 +73,21 @@ class ActiveOrderView(APIView):
             token = request.META.get('HTTP_AUTHORIZATION').split('Bearer')[-1].strip()
             user = Token.objects.get(key=token).user
         except (IndexError, TypeError, AttributeError):
-            return Response({'error': 'Missing authentication token'}, status=status.HTTP_403_FORBIDDEN)
+            return Response({'error': 'Missing authentication token'}, status=status.HTTP_403_FORBIDDEN, headers=headers)
         except Token.DoesNotExist:
-            return Response({'error': 'No user found with the provided token'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'No user found with the provided token'}, status=status.HTTP_404_NOT_FOUND, headers=headers)
 
         order = Order.active_orders_for_user(user=user)
-        if not order:
-            return Response({}, status=status.HTTP_404_NOT_FOUND)
-
         items = []
+        if not order:
+            return Response(
+                {
+                    'user_id': user.id,
+                    'items': items,
+                }, 
+                status=status.HTTP_200_OK
+            )
+        
         for item in order.order_items.all():
             items.append(
                 {
@@ -79,7 +104,10 @@ class ActiveOrderView(APIView):
             'table_number': order.table.number,
             'items': items,
         }
-        return Response(order_obj, status=status.HTTP_200_OK)
+        return Response(
+            order_obj, 
+            status=status.HTTP_200_OK
+        )
 
 
 class OrderView(APIView):

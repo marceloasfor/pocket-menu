@@ -3,6 +3,9 @@ const nextConfig = {
     experimental: {
       serverActions: true,
     },
+    env: {
+      BACKEND_URL: process.env.BACKEND_URL,
+    },
     async redirects() {
       return [
         {
