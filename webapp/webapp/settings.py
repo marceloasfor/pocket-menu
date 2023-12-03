@@ -81,8 +81,8 @@ ASGI_APPLICATION = 'webapp.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DB_NAME = os.environ.get('DB_NAME', 'pocket_menu_db')
-DB_HOST = os.environ.get('DB_HOST', 'db')
+DB_NAME = os.environ.get('DB_NAME', 'pocketmenudb')
+DB_HOST = os.environ.get('DB_HOST', 'localhost')
 DB_PASSWORD = os.environ.get('DB_PASSWORD', 'getyourown')
 DB_USER = os.environ.get('DB_USER', 'postgres')
 DB_PORT = os.environ.get('DB_PORT', '5432')
