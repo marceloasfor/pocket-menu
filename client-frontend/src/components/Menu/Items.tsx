@@ -18,19 +18,23 @@ const Menu = (
 
   async function orderItem(token:string, id:number) { // TODO: check if this is not rendered in the client side
     console.log("POST request to the backend (?) to order ");
+
+    // const toast_id = toast.loading("Sending Order. Please wait...")
     setLoading(true)
-    console.log(await addOrder(token, id)); // add feedback
+    const response = addOrder(token, id);
+    toast.promise(response, {
+      pending: 'Sending Order. Please wait...',
+      success: 'Order sent to kitchen',
+      error: 'Sorry. Error during fetching',
+   })
     setLoading(false)
-    toast.success('Order sent to kitchen', {
-      position: "bottom-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+
+    // toast.update(toast_id, {
+    //   render: 'Order sent to kitchen',
+    //   position: "bottom-right",
+    //   type: "success",
+    //   isLoading: false
+    // });
   }
 
   // const handleOrder = (itemId: any) => {

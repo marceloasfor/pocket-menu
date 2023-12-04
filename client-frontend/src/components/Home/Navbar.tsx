@@ -14,7 +14,8 @@ function Navbar() {
 
   return (
     <div className="flex fixed justify-between items-center px-5 lg:px-36 w-screen h-[100px] bg-white">
-      <Image src="/images/logo.png" alt="logo" height={60} width={80} />
+      {/* <Image src="/images/logo.png" alt="logo" height={60} width={80} /> */}
+      <Link href={"/"} className="text-2xl font-semibold">Pocket Menu</Link>
       <div className="hidden gap-10 font-medium lg:flex">
         {NAV_LINKS.map((item, index) => {
           return (

@@ -2,11 +2,13 @@
 
 import { useUser } from "@/contexts/UserContext";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ClipLoader } from "react-spinners";
 
 import { anonLogin } from "../../app/actions";
 import { setCookie } from "nookies";
+import { getSession, signIn } from "next-auth/react";
+import { toast } from "react-toastify";
 
 function LoginForm() {
     const [name, setName] = useState<string>("");
@@ -15,27 +17,59 @@ function LoginForm() {
     const [error, setError] = useState<string>("");
     const { setUsername, setToken } = useUser();
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get("callbackUrl") || "/";
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         setIsLoading(true);
         
         try {
-            const res = await anonLogin(name, table);
-            const { token, restaurant, error } = res;
+            const res = await signIn("credentials", {
+                redirect: false,
+                username: name,
+                password: table,
+                callbackUrl,
+            });
+            // const { token, restaurant, table_number, error } = res;
 
-            if (error) {               
+            if (res?.error) {               
                 throw new Error(error);
+            } else if (res?.status === 200) {
+                toast('Welcome back!', {
+                    position: "bottom-right",
+                    autoClose: 2000,
+                    draggable: true,
+                    pauseOnHover: true,
+                    progress: undefined,
+                    hideProgressBar: false,
+                    toastId: 'join',
+                });
+            } else if (res?.status === 201) {
+                toast('Welcome!', {
+                    position: "bottom-right",
+                    autoClose: 2000,
+                    draggable: true,
+                    pauseOnHover: true,
+                    progress: undefined,
+                    hideProgressBar: false,
+                    toastId: 'join',
+                });
             }
 
+            const session = await getSession();
+            const restaurant = session?.restaurant_id;
+            const table_number = session?.table_number;
+            const token = session?.user?.accessToken;
+
             setCookie(null, "restaurant", restaurant);
-            setCookie(null, "verification_code", table);
+            setCookie(null, "verification_code", table_number);
 
             name && setUsername(name);
             token && setToken(token);
             
-            router.push(`/table/${table}/users`);
-        } catch (err) {
+            router.push(`/table/${table_number}/users`);
+        } catch (err: any) {
             console.error(err)
             setError(err.message)
         } finally {
@@ -51,7 +85,7 @@ function LoginForm() {
                     <input
                         type="text"
                         className="px-4 py-2 w-80 h-10 bg-gray-50 rounded-full focus:outline-none focus:border focus:border-primary focus:bg-gray-50 focus:placeholder-gray-400/60 placeholder:text-sm"
-                        placeholder="Table Number"
+                        placeholder="Verification Code"
                         onChange={(e) => setTable(e.target.value)}
                         required={true}
                     />

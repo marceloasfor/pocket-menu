@@ -6,27 +6,31 @@ import { toast } from "react-toastify";
 
 import { getAllUsers } from "@/app/actions";
 import Users from "@/components/User/UserList";
+import { getSession, useSession } from 'next-auth/react';
+import {SERVER_URL} from '@/config'
 
 // import EventSource from 'eventsource';
 const EventSource = require('eventsource');
 
 export default function UsersPage() {
-  const verificationCode = Cookies.get("verification_code") || "";
-  const token = Cookies.get("token") || "";
-  const username = Cookies.get("username") || "";
+  // const verificationCode = Cookies.get("verification_code") || "";
+  // const token = Cookies.get("token") || "";
+  // const username = Cookies.get("username") || "";
+  const {data: session} = useSession();
   const [, setError] = useState();
 
   const [tableUsers, setTableUsers] = useState([]);
 
-  const uri = 'http://localhost:8000/table/' + verificationCode + '/stream/';
+  const uri = SERVER_URL + '/table/' + session?.table_number + '/stream/';
   const ssEvents = new EventSource(
     uri, { withCredentials: false }
   );
 
   useEffect(() => {
     const getFetchUsers = async () => {
+      const user_session = await getSession();
       try {
-        const res = await getAllUsers(token);
+        const res = await getAllUsers(user_session?.user?.accessToken);
         const { error } = res;
 
         if (error) {
@@ -48,26 +52,25 @@ export default function UsersPage() {
     // listen to login event
     ssEvents.addEventListener("join-table", (e:any) => {
       const user = JSON.parse(e.data);
-      const message =
-        user.username === username
-          ? "Welcome!"
-          : "A new user joined the table!";
-      toast(message, {
-        position: "bottom-right",
-        autoClose: 2000,
-        draggable: true,
-        pauseOnHover: true,
-        progress: undefined,
-        hideProgressBar: false,
-        toastId: 'join',
-      });
-      setTableUsers((prevUsers) => [...prevUsers, user]);
+
+      if(!(user.username === session?.user?.name)) {
+        toast("A new user joined the table!", {
+          position: "bottom-right",
+          autoClose: 2000,
+          draggable: true,
+          pauseOnHover: true,
+          progress: undefined,
+          hideProgressBar: false,
+          toastId: 'join',
+        });
+        setTableUsers((prevUsers) => [...prevUsers, user]);
+      }
     });
 
     ssEvents.addEventListener("leave-table", (e:any) => {
       const user = JSON.parse(e.data);
       const message =
-        user.username === username
+        user.username === session?.user?.name
           ? "Bye!"
           : "A user left the table!";
       toast(message, {
@@ -98,7 +101,7 @@ export default function UsersPage() {
 
   return (
       <div className='h-screen text-white'>
-        <div className='overflow-y-auto pb-20 pt-10 self-start'>
+        <div className='overflow-y-auto pb-20 self-start'>
           <Users users={tableUsers} />
         </div>
       </div>

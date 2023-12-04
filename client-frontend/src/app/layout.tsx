@@ -1,7 +1,10 @@
 import UserProvider from "@/contexts/UserContext";
+import {Providers} from "@/contexts/Providers";
+
 import "./globals.css";
 import localFont from "next/font/local";
 import { Metadata } from "next";
+
 import "react-toastify/dist/ReactToastify.min.css";
 import { ToastContainer } from "react-toastify";
 
@@ -28,12 +31,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <UserProvider>
-        <body className={calibre.className}>
-          {children}
-          <ToastContainer />
-        </body>
-      </UserProvider>
+      <body className={calibre.className}>
+        <ToastContainer />
+        <Providers>
+          <UserProvider>
+            {children}
+          </UserProvider>
+        </Providers>
+      </body>
     </html>
   );
 }

@@ -3,15 +3,16 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { exitTable } from "../../app/actions";
 import { destroyCookie } from "nookies";
-import { useDispatch } from 'react-redux'
-import { resetCart } from '@/redux/features/cart-slice'
+// import { useDispatch } from 'react-redux'
+// import { resetCart } from '@/redux/features/cart-slice'
 
-import { useUser } from "@/contexts/UserContext";
+// import { useUser } from "@/contexts/UserContext";
+import { signOut } from "next-auth/react";
 
 export default function ExitDialog({ setModal, token }:{ setModal:Dispatch<SetStateAction<JSX.Element | null>>, token:string }) {
     const router = useRouter();
     // const {tableCode} = useParams();
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
     const [loading, setLoading] = useState(false)
     
     const exit = async (token:string) => {
@@ -26,7 +27,9 @@ export default function ExitDialog({ setModal, token }:{ setModal:Dispatch<SetSt
                 throw new Error(error);
             };
 
-            dispatch(resetCart());
+            await signOut();
+
+            // dispatch(resetCart());
 
             destroyCookie({}, "restaurant", {path: `/`});
             destroyCookie({}, "verification_code", {path: `/`});

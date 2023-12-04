@@ -56,7 +56,6 @@ function TableHeader() {
                     </div>
                 </div>
 
-                <p className="m-0 text-xl">Welcome {username}</p>
             </div>
         </div>
     );
