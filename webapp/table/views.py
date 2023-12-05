@@ -138,20 +138,26 @@ class UsersInTableList(APIView):
         table = Table.objects.filter(verification_code=verification_code)
         if not table.exists():
             return Response({'error': 'Table not found'}, status=status.HTTP_404_NOT_FOUND)
-        # elif not table[0].available:
-        #     return Response({'error': 'Table not available'}, status=status.HTTP_409_CONFLICT)
-        # elif table[0].capacity <= table[0].users.count():
-        #     return Response({'error': 'Table is full'}, status=status.HTTP_409_CONFLICT)
+        elif not table[0].available:
+            return Response({'error': 'Table not available'}, status=status.HTTP_409_CONFLICT)
+        elif table[0].capacity <= table[0].users.count():
+            return Response({'error': 'Table is full'}, status=status.HTTP_409_CONFLICT)
 
         user, user_created = User.objects.get_or_create(username=username)
         token = Token.objects.get_or_create(user=user)
+
         response_status = status.HTTP_200_OK
 
         if user_created:
             response_status = status.HTTP_201_CREATED
             table[0].users.add(user.id)
-        
-        resp = Response({'user_id': user.id, 'username': user.username, 'token': token[0].key, 'restaurant_id': table[0].restaurant.id, 'restaurant_name': table[0].restaurant.name, 'table_number': table[0].number}, status=response_status)
+        elif not table[0].users.contains(user):
+            return Response({'error': 'Username already taken'}, status=status.HTTP_409_CONFLICT)
+            
+        resp = Response(
+            {'user_id': user.id, 'username': user.username, 'token': token[0].key, 'restaurant_id': table[0].restaurant.id, 'restaurant_name': table[0].restaurant.name, 'table_number': table[0].number}, 
+            status=response_status
+        )
         resp.set_cookie('name', username)
 
         send_event(
@@ -175,5 +181,5 @@ class UsersInTableList(APIView):
         if table:
             table[0].users.remove(user)
             send_event('table-{}'.format(table[0].number), 'leave-table', {'id': user.id, 'username': user.username})
-            return Response({'Success': f'{user.username} removed from table'}, status=status.HTTP_200_OK)
+            return Response({'Success': f'{user.username} left the table'}, status=status.HTTP_200_OK)
         return Response({'Error': f'{user.username} Not in any table'}, status=status.HTTP_404_NOT_FOUND)
