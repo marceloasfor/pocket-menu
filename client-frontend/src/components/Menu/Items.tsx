@@ -1,10 +1,55 @@
-import React from 'react';
-import { addOrder } from "@/app/actions";
-import { useDispatch } from 'react-redux';
-import { addToCart } from '@/redux/features/cart-slice';
+'use client'
 
-const Menu = ({ items, token }) => {
-  const dispatch = useDispatch()
+import { useFetch } from '@/hooks/useFetch';
+import React, { useCallback, useState } from 'react';
+import { ClipLoader } from 'react-spinners';
+import { useSWRConfig } from 'swr';
+import { addOrder } from "@/app/actions";
+import { toast } from 'react-toastify';
+// import { useDispatch } from 'react-redux';
+// import { addToCart } from '@/redux/features/cart-slice';
+
+
+const Menu = (
+  { items, token } : { items: any, token: string }
+) => {
+  // const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false);
+
+  async function orderItem(token:string, id:number) { // TODO: check if this is not rendered in the client side
+    console.log("POST request to the backend (?) to order ");
+
+    // const toast_id = toast.loading("Sending Order. Please wait...")
+    setLoading(true)
+    const response = addOrder(token, id);
+    toast.promise(response, {
+      pending: 'Sending Order. Please wait...',
+      success: 'Order sent to kitchen',
+      error: 'Sorry. Error during fetching',
+   })
+    setLoading(false)
+
+    // toast.update(toast_id, {
+    //   render: 'Order sent to kitchen',
+    //   position: "bottom-right",
+    //   type: "success",
+    //   isLoading: false
+    // });
+  }
+
+  // const handleOrder = (itemId: any) => {
+  //   const apiUrl = process.env.BACKEND_URL + '/order/'
+  //   const fetchOptions = {
+  //     method: 'POST',
+  //     headers: { "Authorization" : `Bearer ${token}` },
+  //     body: JSON.stringify({ id: itemId }),
+  //   }
+  //   const { data, isLoading } = useFetch(apiUrl, fetchOptions);
+
+  //   const { mutate } = useSWRConfig()
+  //   mutate(process.env.BACKEND_URL + '/order/active/')
+  // };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-12">
       {items.map((menuItem:any) => {
@@ -18,11 +63,15 @@ const Menu = ({ items, token }) => {
               <p className="text-gray-500 text-md text-center">{description}</p>
               <h2 className="text-gray-900 text-2xl font-bold">R${price}</h2>
               <button 
+                key={id}
                 className="bg-violet-500 hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300 px-8 py-2 rounded-full mt-24 text-white"
+                disabled={loading}
                 onClick={()=>
-                  dispatch(addToCart({...menuItem}))
+                  orderItem(token, id)
                 }
-              >Order</button>
+              >
+                Order
+              </button>
             </div>
           </div>
         );

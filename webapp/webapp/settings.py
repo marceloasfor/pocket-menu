@@ -2,6 +2,10 @@ from dotenv import load_dotenv
 import os
 
 from pathlib import Path
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,6 +48,7 @@ INSTALLED_APPS = [
 
     'channels',
     'django_eventstream',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +61,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     'django_grip.GripMiddleware',
+
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = 'webapp.urls'
@@ -100,20 +107,15 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': '',
-#         'USER': '',
-#         'PASSWORD': '',
-#         'HOST': '',
-#         'PORT': 5432
-#     }
-# }
 EVENTSTREAM_ALLOW_ORIGIN = 'http://localhost:3000'
 EVENTSTREAM_ALLOW_CREDENTIALS = False
 EVENTSTREAM_ALLOW_HEADERS = 'Cache-Control'
 
+CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",
+#     "http://127.0.0.1:3000",
+# ]
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

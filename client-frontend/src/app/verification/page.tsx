@@ -14,7 +14,7 @@ export default function Home() {
               <br /> 
             </p>
             <p className="text-lg leading-7 text-gray-600">
-              Inform the table and your username:
+              Inform the verification code and your username:
             </p>
           </div>
           <LoginForm />

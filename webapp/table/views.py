@@ -138,31 +138,35 @@ class UsersInTableList(APIView):
         table = Table.objects.filter(verification_code=verification_code)
         if not table.exists():
             return Response({'error': 'Table not found'}, status=status.HTTP_404_NOT_FOUND)
-        # elif not table[0].available:
-        #     return Response({'error': 'Table not available'}, status=status.HTTP_409_CONFLICT)
-        # elif table[0].capacity <= table[0].users.count():
-        #     return Response({'error': 'Table is full'}, status=status.HTTP_409_CONFLICT)
+        elif not table[0].available:
+            return Response({'error': 'Table not available'}, status=status.HTTP_409_CONFLICT)
+        elif table[0].capacity <= table[0].users.count():
+            return Response({'error': 'Table is full'}, status=status.HTTP_409_CONFLICT)
 
-        user = User.objects.get_or_create(username=username)
-        token = Token.objects.get_or_create(user=user[0])
-        if Table.objects.filter(users__in=[user[0].id]).exists():
-            Table.objects.get(users__in=[user[0].id]).id
-            resp = Response({'token': token[0].key}, status=status.HTTP_200_OK)
-            resp.set_cookie('name', username)
-            return resp
+        user, user_created = User.objects.get_or_create(username=username)
+        token = Token.objects.get_or_create(user=user)
 
-        # last_id = get_current_event_id(['table-{}'.format(table[0].number)])
-        # print(last_id)
+        response_status = status.HTTP_200_OK
 
-        table[0].users.add(user[0].id)
-        resp = Response({'token': token[0].key, 'restaurant': table[0].restaurant.id}, status=status.HTTP_201_CREATED)
+        if user_created:
+            response_status = status.HTTP_201_CREATED
+            table[0].users.add(user.id)
+        elif not table[0].users.contains(user):
+            return Response({'error': 'Username already taken'}, status=status.HTTP_409_CONFLICT)
+            
+        resp = Response(
+            {'user_id': user.id, 'username': user.username, 'token': token[0].key, 'restaurant_id': table[0].restaurant.id, 'restaurant_name': table[0].restaurant.name, 'table_number': table[0].number}, 
+            status=response_status
+        )
         resp.set_cookie('name', username)
 
-        # Dispara o evento
-        # users = [{"username": user.username} for user in table[0].users.all()]
-        send_event('table-{}'.format(table[0].number), 'join-table', {'id': user[0].id, 'username': user[0].username})
+        send_event(
+            'table-{}'.format(table[0].number), 
+            'join-table', {'id': user.id, 'username': user.username}
+        )
 
         return resp
+
 
     def delete(self, request, format=None):
         try:
@@ -176,7 +180,6 @@ class UsersInTableList(APIView):
         table = Table.objects.filter(users__in=[user.id])
         if table:
             table[0].users.remove(user)
-            # users = [{"username": user.username} for user in table[0].users.all()]
             send_event('table-{}'.format(table[0].number), 'leave-table', {'id': user.id, 'username': user.username})
-            return Response({'Success': f'{user.username} removed from table'}, status=status.HTTP_200_OK)
+            return Response({'Success': f'{user.username} left the table'}, status=status.HTTP_200_OK)
         return Response({'Error': f'{user.username} Not in any table'}, status=status.HTTP_404_NOT_FOUND)
