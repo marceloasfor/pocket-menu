@@ -8,7 +8,7 @@ services:
     ports:
       - "${DB_PORT:-5432}:5432"
     environment:
-      POSTGRES_DB: "${DB_NAME:-pocket_menu_db}"
+      POSTGRES_DB: "${DB_NAME:-pocketmenudb}"
       POSTGRES_PASSWORD: "${DB_PASSWORD:-getyourown}"
       POSTGRES_USER: "${DB_USER:-postgres}"
       PGDATA: /pgdata
@@ -32,7 +32,7 @@ services:
     ports:
       - "${LOCAL_DJANGO_PORT:-8000}:8000"
     environment:
-      DB_NAME: "${DB_NAME:-pocket_menu_db}"
+      DB_NAME: "${DB_NAME:-pocketmenudb}"
       DB_HOST: "${DB_HOST:-db}"
       DB_PORT: "${DB_PORT:-5432}"
       DB_USER: "${DB_USER:-timeout}"
