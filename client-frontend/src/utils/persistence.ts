@@ -6,18 +6,18 @@ import { cookies } from "next/headers";
 import Cookies from "js-cookie";
 
 export function useLocalState(key:string, defaultValue:any) {
-    if (typeof window !== "undefined") {
-        const [state, setState] = useState(
-            () => JSON.parse(localStorage.getItem(key) || "") || defaultValue
-        );
+    // if (typeof window !== "undefined") {
+    //     const [state, setState] = useState(
+    //         () => JSON.parse(localStorage.getItem(key) || "") || defaultValue
+    //     );
 
-        useEffect(() => {
-            localStorage.setItem(key, JSON.stringify(state));
-        }, [key, state]);
-    
-        return [state, setState];
-    }
-    return [null, null]    
+    //     useEffect(() => {
+    //         localStorage.setItem(key, JSON.stringify(state));
+    //     }, [key, state]);
+
+    //     return [state, setState];
+    // }
+    return [null, null]
 }
 
 export function useCookieState(key:string, defaultValue:string) {

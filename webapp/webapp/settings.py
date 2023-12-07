@@ -107,7 +107,7 @@ DATABASES = {
     }
 }
 
-EVENTSTREAM_ALLOW_ORIGIN = 'http://localhost:3000'
+EVENTSTREAM_ALLOW_ORIGIN = os.environ.get('REACT_URL', 'http://localhost:3000')
 EVENTSTREAM_ALLOW_CREDENTIALS = False
 EVENTSTREAM_ALLOW_HEADERS = 'Cache-Control'
 
