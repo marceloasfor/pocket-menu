@@ -27,7 +27,7 @@ export const authOptions: AuthOptions = {
                 },
             },
             async authorize(credentials) {
-                const resp = await fetch("http://127.0.0.1:8000/table/member/", {
+                const resp = await fetch(backendURL + "table/member/", {
                     method: "POST",
                     headers: {
                         Accept: "application/json",
@@ -36,11 +36,12 @@ export const authOptions: AuthOptions = {
                     body: JSON.stringify({ username: credentials?.username, verification_code: credentials?.password  }),
                 });
                 const user = await resp.json();
-                if (user) {
+                const {error} = user;
+
+                if (!error) {
                     return user;
                 } else {
-                    console.log("check your credentials");
-                    return null;
+                    throw new Error(user.error);
                 }
             },
         }),

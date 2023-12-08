@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { getAllUsers } from "@/app/actions";
 import Users from "@/components/User/UserList";
 import { getSession, useSession } from 'next-auth/react';
+
 // import {SERVER_URL} from '@/config'
 import { backendURL } from "@/app/api/auth/[...nextauth]/route"
 

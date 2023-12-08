@@ -9,9 +9,9 @@ import { useEffect, useState } from 'react'
 // import { useSelector } from 'react-redux'
 import { BiArrowBack } from 'react-icons/bi';
 import Cookies from 'js-cookie'
+
 // import {SERVER_URL} from '@/config'
 import { backendURL } from "@/app/api/auth/[...nextauth]/route"
-
 
 export default function OrdersPage() {
     const { tableCode } = useParams();
