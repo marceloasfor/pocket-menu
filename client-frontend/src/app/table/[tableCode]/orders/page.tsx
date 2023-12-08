@@ -18,7 +18,6 @@ export default function OrdersPage() {
     const [isClient, setIsClient] = useState(false)
     // const cart = useSelector((state:any) => state.cart)
     const token = Cookies.get("token") || "";
-
     const apiUrl = backendURL + '/order/active/'
     const refreshInterval = 5000;
     const fetchOptions = {
@@ -41,7 +40,7 @@ export default function OrdersPage() {
         data?.items.forEach((item:any) => {
             price += item.quantity * item.price
         })
-        return price
+        return price.toFixed(2)
     }
     const getTotalQuantity = () => {
         let quantity = 0

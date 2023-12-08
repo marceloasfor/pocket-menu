@@ -6,8 +6,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 // export const backendURL = process.env.SERVER_URL;
 // TODO: make the .env work
 // IMPORTANT: no trailing / at backendURL
-// export const backendURL = "http://localhost:8000";
-export const backendURL = process.env.REACT_APP_SERVER_URL;
+export const backendURL = "http://54.146.254.132";
+// export const backendURL = process.env.REACT_APP_SERVER_URL;
 
 export const authOptions: AuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,

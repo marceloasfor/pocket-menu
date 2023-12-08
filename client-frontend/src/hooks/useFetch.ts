@@ -1,7 +1,6 @@
 import useSWR from 'swr';
 
 const fetcher = async (url: string, options: any) => {
-  console.log(options)
   const res = await fetch(url, options);
 
   // If the status code is not in the range 200-299,
@@ -24,8 +23,8 @@ export function useFetch<Data = any, Error = any>(
   refreshInterval: number = 0
 ) {
   const { data, error, isLoading, isValidating, mutate } = useSWR<Data, Error>(
-    [url, options], 
-    ([url, options]) => fetcher(url, options), 
+    [url, options],
+    ([url, options]) => fetcher(url, options),
     {refreshInterval,}
   );
   return { data, error, isLoading, isValidating, mutate };
