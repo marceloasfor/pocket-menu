@@ -7,7 +7,9 @@ import { toast } from "react-toastify";
 import { getAllUsers } from "@/app/actions";
 import Users from "@/components/User/UserList";
 import { getSession, useSession } from 'next-auth/react';
-import {SERVER_URL} from '@/config'
+
+// import {SERVER_URL} from '@/config'
+import { backendURL } from "@/app/api/auth/[...nextauth]/route"
 
 // import EventSource from 'eventsource';
 const EventSource = require('eventsource');
@@ -21,7 +23,7 @@ export default function UsersPage() {
 
   const [tableUsers, setTableUsers] = useState([]);
 
-  const uri = SERVER_URL + '/table/' + session?.table_number + '/stream/';
+  const uri = backendURL + '/table/' + session?.table_number + '/stream/';
   const ssEvents = new EventSource(
     uri, { withCredentials: false }
   );

@@ -9,8 +9,9 @@ import { useEffect, useState } from 'react'
 // import { useSelector } from 'react-redux'
 import { BiArrowBack } from 'react-icons/bi';
 import Cookies from 'js-cookie'
-import {SERVER_URL} from '@/config'
 
+// import {SERVER_URL} from '@/config'
+import { backendURL } from "@/app/api/auth/[...nextauth]/route"
 
 export default function OrdersPage() {
     const { tableCode } = useParams();
@@ -18,13 +19,13 @@ export default function OrdersPage() {
     // const cart = useSelector((state:any) => state.cart)
     const token = Cookies.get("token") || "";
 
-    const apiUrl = SERVER_URL + '/order/active/'
+    const apiUrl = backendURL + '/order/active/'
     const refreshInterval = 5000;
     const fetchOptions = {
         // mode: 'no-cors',
         method: 'GET',
-        headers: { 
-            "Authorization" : `Bearer ${token}`, 
+        headers: {
+            "Authorization" : `Bearer ${token}`,
             "Content-type" : "application/json",
         }
     }
@@ -49,11 +50,11 @@ export default function OrdersPage() {
         })
         return quantity
     }
- 
+
     useEffect(() => {
         setIsClient(true)
     }, [])
-    
+
 
     return (
         <div className="container mx-auto mb-20">
@@ -74,7 +75,7 @@ export default function OrdersPage() {
                             <CartItem
                                 key={item.id}
                                 title={item.name}
-                                price={item.price} 
+                                price={item.price}
                                 quantity={item.quantity}
                             />
                         )) : <p>No items</p>
@@ -85,8 +86,8 @@ export default function OrdersPage() {
                         Back to Menu
                     </Link>
                 </div>
-                
-                {isClient ? 
+
+                {isClient ?
                     <Summary
                         totalPrice={getTotalPrice()}
                         totalQuantity={getTotalQuantity()}
