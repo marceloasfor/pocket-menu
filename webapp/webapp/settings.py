@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 import os
 
 from pathlib import Path
@@ -9,12 +10,13 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-dfjvp091ofn7y=a@(+-)!cbdzb4h8f%mq8b_h#cv60barv0b*p'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -88,11 +90,11 @@ ASGI_APPLICATION = 'webapp.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DB_NAME = os.environ.get('DB_NAME')
-DB_HOST = os.environ.get('DB_HOST')
-DB_PASSWORD = os.environ.get('DB_PASSWORD')
-DB_USER = os.environ.get('DB_USER')
-DB_PORT = os.environ.get('DB_PORT')
+DB_NAME = os.environ.get('DB_NAME', 'pocketmenudb')
+DB_HOST = os.environ.get('DB_HOST', 'localhost')
+DB_PASSWORD = os.environ.get('DB_PASSWORD', 'getyourown')
+DB_USER = os.environ.get('DB_USER', 'postgres')
+DB_PORT = os.environ.get('DB_PORT', '5432')
 
 DATABASES = {
     'default': {
