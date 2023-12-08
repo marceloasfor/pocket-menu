@@ -8,6 +8,9 @@
 //     )
 // );
 
+// import { backendURL } from "@/app/api/auth/[...nextauth]/route"
+// export const SERVER_URL = backendURL;
+
 export const SERVER_URL = 'http://127.0.0.1:8000';
 
 export const STREAM_URL = `${SERVER_URL}/stream`;

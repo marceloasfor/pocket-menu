@@ -23,6 +23,8 @@ export default function UsersPage() {
   const [tableUsers, setTableUsers] = useState([]);
 
   const uri = backendURL + '/table/' + session?.table_number + '/stream/';
+  console.log('backendURL')
+  console.log(backendURL)
   const ssEvents = new EventSource(
     uri, { withCredentials: false }
   );
