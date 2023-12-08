@@ -12,6 +12,8 @@ import { SafeUser } from "@/types/user";
 import MenuItem from "./MenuItem";
 import Avatar from "@/components/Avatar";
 
+import { backendURL } from "@/app/api/auth/[...nextauth]/route"
+
 interface UserMenuProps {
   currentUser?: SafeUser | null
 }
@@ -26,13 +28,23 @@ const UserMenu: React.FC<UserMenuProps> = ({
 
   const [isOpen, setIsOpen] = useState(false);
 
+  const verificationCode = fetch(`${backendURL}/table/${tableCode}/`,
+  {
+      method: 'GET',
+      headers: { "Content-Type" : "application/json" },
+  })
+    .then((response) => response.json())
+    .then((table) => {
+      return table[0]?.verification_code
+    })
+
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
   }, []);
-
   return (
     <div className="relative">
       <div className="flex flex-row items-center gap-3">
+        <span>Código da Mesa: {verificationCode}</span>
         <div
           onClick={()=>''}
           className="

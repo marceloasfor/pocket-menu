@@ -31,7 +31,6 @@ function TableHeader() {
     useEffect(() => {
       setUsername(Cookies.get("username")!)
     }, [])
-    
 
     return (
         <div className="sticky top-0 left-0 right-0 z-10 w-full h-15 border-b border-gray-200 items-center p-2 content-center bg-white">
