@@ -13,6 +13,7 @@ import Heading from "../Heading";
 import Button from "../Button";
 import { toast } from "react-toastify";
 import { SafeUser } from "@/types/user";
+import { backendURL } from "@/app/api/auth/[...nextauth]/route"
 
 interface LogoutProps {
   currentUser?: SafeUser | null;
@@ -32,7 +33,7 @@ const LogoutModal: React.FC<LogoutProps> = ({
   const onExit = () => {
     setIsLoading(true);
 
-    fetch('http://127.0.0.1:8000/table/member/', {
+    fetch(`${backendURL}/table/member/`, {
         method: 'DELETE',
         headers: { "Authorization" : `Bearer ${currentUser?.accessToken}` }
     })
