@@ -29,11 +29,10 @@ function LoginForm() {
                 redirect: false,
                 username: name,
                 password: table,
-                callbackUrl,
             });
-            // const { token, restaurant, table_number, error } = res;
+            const { error } = res;
 
-            if (res?.error) {               
+            if (error) {               
                 throw new Error(error);
             } else if (res?.status === 200) {
                 toast('Welcome back!', {
