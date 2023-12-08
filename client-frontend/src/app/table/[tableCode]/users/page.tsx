@@ -23,10 +23,10 @@ export default function UsersPage() {
 
   const [tableUsers, setTableUsers] = useState([]);
 
-  const uri = backendURL + '/table/' + session?.table_number + '/stream/';
-  const ssEvents = new EventSource(
-    uri, { withCredentials: false }
-  );
+  // const uri = backendURL + '/table/' + session?.table_number + '/stream/';
+  // const ssEvents = new EventSource(
+  //   uri, { withCredentials: false }
+  // );
 
   useEffect(() => {
     const getFetchUsers = async () => {
@@ -50,56 +50,56 @@ export default function UsersPage() {
     getFetchUsers();
   }, []);
 
-  useEffect(() => {
-    // listen to login event
-    ssEvents.addEventListener("join-table", (e:any) => {
-      const user = JSON.parse(e.data);
+  // useEffect(() => {
+  //   // listen to login event
+  //   ssEvents.addEventListener("join-table", (e:any) => {
+  //     const user = JSON.parse(e.data);
 
-      if(!(user.username === session?.user?.name)) {
-        toast("Alguém entrou na mesa!", {
-          position: "bottom-right",
-          autoClose: 2000,
-          draggable: true,
-          pauseOnHover: true,
-          progress: undefined,
-          hideProgressBar: false,
-          toastId: 'join',
-        });
-        setTableUsers((prevUsers) => [...prevUsers, user]);
-      }
-    });
+  //     if(!(user.username === session?.user?.name)) {
+  //       toast("Alguém entrou na mesa!", {
+  //         position: "bottom-right",
+  //         autoClose: 2000,
+  //         draggable: true,
+  //         pauseOnHover: true,
+  //         progress: undefined,
+  //         hideProgressBar: false,
+  //         toastId: 'join',
+  //       });
+  //       setTableUsers((prevUsers) => [...prevUsers, user]);
+  //     }
+  //   });
 
-    ssEvents.addEventListener("leave-table", (e:any) => {
-      const user = JSON.parse(e.data);
-      const message =
-        user.username === session?.user?.name
-          ? "Tchau!"
-          : "Alguém saiu da mesa!";
-      toast(message, {
-        position: "bottom-right",
-        autoClose: 2000,
-        draggable: true,
-        pauseOnHover: true,
-        progress: undefined,
-        hideProgressBar: false,
-        toastId: 'leave',
-      });
-      setTableUsers(prevUsers => prevUsers.filter(item => item.id !== user.id));
-    });
+  //   ssEvents.addEventListener("leave-table", (e:any) => {
+  //     const user = JSON.parse(e.data);
+  //     const message =
+  //       user.username === session?.user?.name
+  //         ? "Tchau!"
+  //         : "Alguém saiu da mesa!";
+  //     toast(message, {
+  //       position: "bottom-right",
+  //       autoClose: 2000,
+  //       draggable: true,
+  //       pauseOnHover: true,
+  //       progress: undefined,
+  //       hideProgressBar: false,
+  //       toastId: 'leave',
+  //     });
+  //     setTableUsers(prevUsers => prevUsers.filter(item => item.id !== user.id));
+  //   });
 
-    // listen to open event
-    ssEvents.onopen = (e:any) => {
-      console.log(e);
-    };
-    // listen to error event
-    ssEvents.onerror = (e:any) => {
-      console.log(e);
-    };
+  //   // listen to open event
+  //   ssEvents.onopen = (e:any) => {
+  //     console.log(e);
+  //   };
+  //   // listen to error event
+  //   ssEvents.onerror = (e:any) => {
+  //     console.log(e);
+  //   };
 
-    return () => {
-      ssEvents.close();
-    };
-  }, []);
+  //   return () => {
+  //     ssEvents.close();
+  //   };
+  // }, []);
 
   return (
       <div className='h-screen text-white'>
