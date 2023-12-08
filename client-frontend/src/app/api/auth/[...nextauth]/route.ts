@@ -2,7 +2,12 @@ import { AuthOptions } from "next-auth/core/types";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-export const backendURL = process.env.SERVER_URL;
+
+// export const backendURL = process.env.SERVER_URL;
+// TODO: make the .env work
+// IMPORTANT: no trailing / at backendURL
+// export const backendURL = "http://localhost:8000";
+export const backendURL = process.env.REACT_APP_SERVER_URL;
 
 export const authOptions: AuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
@@ -27,7 +32,7 @@ export const authOptions: AuthOptions = {
                 },
             },
             async authorize(credentials) {
-                const resp = await fetch(backendURL + "table/member/", {
+                const resp = await fetch(backendURL + "/table/member/", {
                     method: "POST",
                     headers: {
                         Accept: "application/json",
