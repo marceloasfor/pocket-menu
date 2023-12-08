@@ -19,6 +19,7 @@ export default async function TableLayout({
   const session = await getServerSession(authOptions);
   const currentUser = session?.user;
   const restaurant = session?.restaurant_name;
+  const tableLoginCode = session?.table_login_code;
 
   return (
     <Providers>
@@ -26,7 +27,7 @@ export default async function TableLayout({
           <ModalProvider>
             {/* <TableHeader /> */}
             <LogoutModal currentUser={currentUser} />
-            <Navbar currentUser={currentUser} restaurant={restaurant} />
+            <Navbar currentUser={currentUser} restaurant={restaurant} tableLoginCode={tableLoginCode}/>
             <div className="pb-20 pt-28">
               {children}
             </div>

@@ -60,6 +60,7 @@ export const authOptions: AuthOptions = {
                 token.restaurant_id = user.restaurant_id;
                 token.restaurant_name = user.restaurant_name;
                 token.table_number = user.table_number;
+                token.table_login_code = user.table_login_code;
             }
 
             return token;
@@ -72,6 +73,7 @@ export const authOptions: AuthOptions = {
                 session.restaurant_id = token.restaurant_id;
                 session.restaurant_name = token.restaurant_name;
                 session.table_number = token.table_number;
+                session.table_login_code = token.table_login_code;
             }
             return session;
         },

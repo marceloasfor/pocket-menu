@@ -130,7 +130,6 @@ class UsersInTableList(APIView):
         verification_code = body.get('verification_code')
         if not verification_code:
             return Response({'error': 'Verification code not provided'}, status=status.HTTP_403_FORBIDDEN)
-        
         username = body.get('username')
         if not username:
             return Response({'error': 'Username not provided'}, status=status.HTTP_400_BAD_REQUEST)
@@ -153,15 +152,23 @@ class UsersInTableList(APIView):
             table[0].users.add(user.id)
         elif not table[0].users.contains(user):
             return Response({'error': 'Username already taken'}, status=status.HTTP_409_CONFLICT)
-            
+
         resp = Response(
-            {'user_id': user.id, 'username': user.username, 'token': token[0].key, 'restaurant_id': table[0].restaurant.id, 'restaurant_name': table[0].restaurant.name, 'table_number': table[0].number}, 
+            {
+                'user_id': user.id,
+                'username': user.username,
+                'token': token[0].key,
+                'restaurant_id': table[0].restaurant.id,
+                'restaurant_name': table[0].restaurant.name,
+                'table_number': table[0].number,
+                'table_login_code': table[0].verification_code,
+            },
             status=response_status
         )
         resp.set_cookie('name', username)
 
         send_event(
-            'table-{}'.format(table[0].number), 
+            'table-{}'.format(table[0].number),
             'join-table', {'id': user.id, 'username': user.username}
         )
 

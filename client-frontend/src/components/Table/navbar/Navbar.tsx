@@ -7,33 +7,35 @@ import UserMenu from "./UserMenu";
 interface NavbarProps {
   currentUser?: SafeUser | null;
   restaurant?: string | null;
+  tableLoginCode?: string | null;
 }
 
 const Navbar: React.FC<NavbarProps> = ({
   currentUser,
-  restaurant
+  restaurant,
+  tableLoginCode
 }) => {
-  return ( 
+  return (
     <div className="fixed w-full bg-white z-10 shadow-sm">
       <div
         className="
-          py-4 
+          py-4
           border-b-[1px]
         "
       >
       <Container>
-        <div 
+        <div
           className="
-            flex 
-            flex-row 
-            items-center 
+            flex
+            flex-row
+            items-center
             justify-between
             gap-3
             md:gap-0
           "
         >
           <p className="text-2xl font-semibold">{restaurant}</p>
-          <UserMenu currentUser={currentUser} />
+          <UserMenu currentUser={currentUser} tableLoginCode={tableLoginCode} />
         </div>
       </Container>
     </div>
