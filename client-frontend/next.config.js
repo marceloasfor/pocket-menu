@@ -4,7 +4,9 @@ const nextConfig = {
       serverActions: true,
     },
     env: {
-      BACKEND_URL: process.env.BACKEND_URL,
+      // BACKEND_URL: 'http://localhost:8000/',
+      // TODO: make the .env work
+      BACKEND_URL: process.env.REACT_APP_BACKEND_4NEXT_URL,
     },
     async redirects() {
       return [
