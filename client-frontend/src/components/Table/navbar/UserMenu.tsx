@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { signOut } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
+import { toast } from 'react-toastify';
 
 import useLoginModal from "@/hooks/useLoginModal";
 import { SafeUser } from "@/types/user";
@@ -29,41 +30,41 @@ const UserMenu: React.FC<UserMenuProps> = ({
     setIsOpen((value) => !value);
   }, []);
 
-  return ( 
+  return (
     <div className="relative">
       <div className="flex flex-row items-center gap-3">
-        <div 
+        <div
           onClick={()=>''}
           className="
             hidden
             md:block
             text-md
-            font-semibold 
-            py-3 
-            px-4 
-            rounded-full 
-            hover:bg-neutral-100 
-            transition 
+            font-semibold
+            py-3
+            px-4
+            rounded-full
+            hover:bg-neutral-100
+            transition
             cursor-pointer
           "
         >
-          Welcome {currentUser?.name}
+          Bem-vindo {currentUser?.name}
         </div>
-        <div 
+        <div
         onClick={toggleOpen}
         className="
           p-4
           md:py-1
           md:px-2
-          border-[1px] 
-          border-neutral-200 
-          flex 
-          flex-row 
-          items-center 
-          gap-3 
-          rounded-full 
-          cursor-pointer 
-          hover:shadow-md 
+          border-[1px]
+          border-neutral-200
+          flex
+          flex-row
+          items-center
+          gap-3
+          rounded-full
+          cursor-pointer
+          hover:shadow-md
           transition
           "
         >
@@ -74,42 +75,54 @@ const UserMenu: React.FC<UserMenuProps> = ({
         </div>
       </div>
       {isOpen && (
-        <div 
+        <div
           className="
-            absolute 
-            rounded-xl 
+            absolute
+            rounded-xl
             shadow-md
             w-[40vw]
-            md:w-3/4 
-            bg-white 
-            overflow-hidden 
-            right-0 
-            top-12 
+            md:w-3/4
+            bg-white
+            overflow-hidden
+            right-0
+            top-12
             text-sm
           "
         >
           <div className="flex flex-col cursor-pointer">
             {currentUser ? (
               <>
-                <MenuItem 
-                  label="My Orders" 
+                <MenuItem
+                  label="Meus Pedidos"
                   onClick={() => router.push(`/table/${tableCode}/orders`)}
                 />
-                <MenuItem 
-                  label="Menu" 
+                <MenuItem
+                  label="Cardápio"
                   onClick={() => router.push(`/table/${tableCode}/menu`)}
                 />
+                <MenuItem
+                  label="Chamar Atendente"
+                  onClick={() => toast('O atendente estará com você em breve!', {
+                    position: "bottom-right",
+                    autoClose: 2000,
+                    draggable: true,
+                    pauseOnHover: true,
+                    progress: undefined,
+                    hideProgressBar: false,
+                    toastId: 'join',
+                })}
+                />
                 <hr />
-                <MenuItem 
-                  label="Logout" 
+                <MenuItem
+                  label="Sair"
                   // onClick={() => signOut()}
                   onClick={loginModal.onOpen}
                 />
               </>
             ) : (
               <>
-                <MenuItem 
-                  label="Login" 
+                <MenuItem
+                  label="Login"
                   onClick={()=>''}
                 />
               </>
@@ -120,5 +133,5 @@ const UserMenu: React.FC<UserMenuProps> = ({
     </div>
    );
 }
- 
+
 export default UserMenu;

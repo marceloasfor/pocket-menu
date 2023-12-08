@@ -56,7 +56,7 @@ export default function UsersPage() {
       const user = JSON.parse(e.data);
 
       if(!(user.username === session?.user?.name)) {
-        toast("A new user joined the table!", {
+        toast("Alguém entrou na mesa!", {
           position: "bottom-right",
           autoClose: 2000,
           draggable: true,
@@ -73,8 +73,8 @@ export default function UsersPage() {
       const user = JSON.parse(e.data);
       const message =
         user.username === session?.user?.name
-          ? "Bye!"
-          : "A user left the table!";
+          ? "Tchau!"
+          : "Alguém saiu da mesa!";
       toast(message, {
         position: "bottom-right",
         autoClose: 2000,

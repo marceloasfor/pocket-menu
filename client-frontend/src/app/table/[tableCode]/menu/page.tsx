@@ -29,7 +29,7 @@ export default function Page() {
       const menuItemsRes = res;
       setMenuItems(menuItemsRes);
       setAllMenuItems(menuItemsRes);
-      setAllCategories(['all', ...Array.from(new Set(menuItemsRes.map((item: any) => item.category.name)))]);
+      setAllCategories(['tudo', ...Array.from(new Set(menuItemsRes.map((item: any) => item.category.name)))]);
     }
     getItems();
 
@@ -46,7 +46,7 @@ export default function Page() {
   const [categories, setCategories] = useState(allCategories);
 
   const filterItems = (category: any) => {
-    if(category =='all'){
+    if(category =='tudo'){
       setMenuItems(allMenuItems);
       return;
     }

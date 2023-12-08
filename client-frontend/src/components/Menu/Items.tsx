@@ -23,9 +23,9 @@ const Menu = (
     setLoading(true)
     const response = addOrder(token, id);
     toast.promise(response, {
-      pending: 'Sending Order. Please wait...',
-      success: 'Order sent to kitchen',
-      error: 'Sorry. Error during fetching',
+      pending: 'Realizando o pedido. Por favor, aguarde...',
+      success: 'Pedido confirmado',
+      error: 'Ops! Ocorreu um erro. Por favor chame o atendente.',
    })
     setLoading(false)
 
@@ -62,7 +62,7 @@ const Menu = (
               <h1 className="text-gray-900 text-3xl">{name}</h1>
               <p className="text-gray-500 text-md text-center">{description}</p>
               <h2 className="text-gray-900 text-2xl font-bold">R${price}</h2>
-              <button 
+              <button
                 key={id}
                 className="bg-violet-500 hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300 px-8 py-2 rounded-full mt-24 text-white"
                 disabled={loading}
@@ -70,7 +70,7 @@ const Menu = (
                   orderItem(token, id)
                 }
               >
-                Order
+                Pedir
               </button>
             </div>
           </div>

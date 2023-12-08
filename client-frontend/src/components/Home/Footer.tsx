@@ -7,17 +7,6 @@ function Footer() {
         <span className="font-semibold">
           © PocketMenu {new Date().getFullYear()}.{" "}
         </span>
-        <span className="font-light">
-          Made with React by{" "}
-          <a
-            href="pocket_menu_git"
-            target="_blank"
-            className="text-primary"
-          >
-            team_name
-          </a>
-          .
-        </span>
       </div>
     </div>
   );

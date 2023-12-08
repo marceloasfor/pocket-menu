@@ -38,7 +38,7 @@ const LogoutModal: React.FC<LogoutProps> = ({
     })
     .then(() => {
       signOut();
-      toast.success('Bye!');
+      toast.success('Tchau!');
       loginModal.onClose();
     })
     .catch((error) => {
@@ -52,8 +52,8 @@ const LogoutModal: React.FC<LogoutProps> = ({
   const bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading
-        title="See you later"
-        subtitle="Are you sure you want to logout?"
+        title="Agradecemos pela sua visita!"
+        subtitle="Você realmente deseja sair da mesa?"
       />
     </div>
   )
@@ -62,10 +62,10 @@ const LogoutModal: React.FC<LogoutProps> = ({
     <Modal
       disabled={isLoading}
       isOpen={loginModal.isOpen}
-      title="Logout"
-      actionLabel="Yes"
+      title="Sair"
+      actionLabel="Sim"
       onClose={loginModal.onClose}
-      secondaryActionLabel="No"
+      secondaryActionLabel="Não"
       secondaryAction={loginModal.onClose}
       body={bodyContent}
       onSubmit={onExit}

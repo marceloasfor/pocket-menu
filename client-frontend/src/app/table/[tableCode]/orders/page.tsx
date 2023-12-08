@@ -60,13 +60,13 @@ export default function OrdersPage() {
             <div className="overflow-y-auto self-start flex shadow-md">
                 <div className="w-3/4 bg-white px-10 py-10">
                     <div className="flex justify-between border-b pb-8">
-                        <h1 className="font-semibold text-2xl">My Orders</h1>
-                        <h2 className="font-semibold text-2xl">{isClient ? getTotalQuantity() : '0'} Items</h2>
+                        <h1 className="font-semibold text-2xl">Meus Pedidos</h1>
+                        <h2 className="font-semibold text-2xl">{isClient ? getTotalQuantity() : '0'} Itens</h2>
                     </div>
                     <div className="flex mt-10 mb-5">
-                        <h3 className="font-semibold text-gray-600 text-xs uppercase w-2/5">Product Details</h3>
-                        <h3 className="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">Quantity</h3>
-                        <h3 className="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">Price</h3>
+                        <h3 className="font-semibold text-gray-600 text-xs uppercase w-2/5">Detalhes do Pedido</h3>
+                        <h3 className="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">Quantidade</h3>
+                        <h3 className="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">Preço</h3>
                         {/* <h3 className="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">Total</h3> */}
                     </div>
                     {isClient && data?.items.length ?
@@ -77,12 +77,12 @@ export default function OrdersPage() {
                                 price={item.price}
                                 quantity={item.quantity}
                             />
-                        )) : <p>No items</p>
+                        )) : <p>Nenhum pedido.</p>
                     }
 
                     <Link href={`/table/${tableCode}/menu`} className="flex font-semibold text-indigo-600 text-sm mt-20">
                         <BiArrowBack className="fill-current mr-2 text-indigo-600 w-4"/>
-                        Back to Menu
+                        Voltar ao Cardápio
                     </Link>
                 </div>
 

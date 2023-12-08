@@ -23,7 +23,7 @@ function LoginForm() {
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         setIsLoading(true);
-        
+
         try {
             const res = await signIn("credentials", {
                 redirect: false,
@@ -32,10 +32,10 @@ function LoginForm() {
             });
             const { error } = res;
 
-            if (error) {               
+            if (error) {
                 throw new Error(error);
             } else if (res?.status === 200) {
-                toast('Welcome back!', {
+                toast('Seja Bem-vindo!', {
                     position: "bottom-right",
                     autoClose: 2000,
                     draggable: true,
@@ -45,7 +45,7 @@ function LoginForm() {
                     toastId: 'join',
                 });
             } else if (res?.status === 201) {
-                toast('Welcome!', {
+                toast('Bem-vindo!', {
                     position: "bottom-right",
                     autoClose: 2000,
                     draggable: true,
@@ -66,7 +66,7 @@ function LoginForm() {
 
             name && setUsername(name);
             token && setToken(token);
-            
+
             router.push(`/table/${table_number}/users`);
         } catch (err: any) {
             console.error(err)
@@ -84,14 +84,14 @@ function LoginForm() {
                     <input
                         type="text"
                         className="px-4 py-2 w-80 h-10 bg-gray-50 rounded-full focus:outline-none focus:border focus:border-primary focus:bg-gray-50 focus:placeholder-gray-400/60 placeholder:text-sm"
-                        placeholder="Verification Code"
+                        placeholder="Código da Mesa"
                         onChange={(e) => setTable(e.target.value)}
                         required={true}
                     />
                     <input
                         type="text"
                         className="px-4 py-2 w-80 h-10 bg-gray-50 rounded-full focus:outline-none focus:border focus:border-primary focus:bg-gray-50 focus:placeholder-gray-400/60 placeholder:text-sm"
-                        placeholder="Username"
+                        placeholder="Nome de Usuário"
                         onChange={(e) => setName(e.target.value)}
                         minLength={3}
                         maxLength={20}
@@ -107,7 +107,7 @@ function LoginForm() {
                     {isLoading ? (
                         <ClipLoader color="white" size={20} />
                     ) : (
-                        "Join Table"
+                        "Entrar na Mesa"
                     )}
                     </button>
                 </div>

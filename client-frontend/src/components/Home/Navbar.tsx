@@ -6,7 +6,7 @@ import Link from "next/link";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 
 const NAV_LINKS = [
-  { title: "Follow us", link: "#link_to_socials" },
+  { title: "", link: "#link_to_socials" },
 ];
 
 function Navbar() {

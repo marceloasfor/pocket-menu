@@ -11,10 +11,10 @@ export default function Home() {
           <div className="flex flex-col gap-5">
             <p className=" text-[72px] leading-[70px] lg:text-[90px] text-transparent font-medium lg:leading-[95px] tracking-tight bg-gradient bg-clip-text">
               POCKET MENU
-              <br /> 
+              <br />
             </p>
             <p className="text-lg leading-7 text-gray-600">
-              Inform the verification code and your username:
+              Insira o código da mesa e o nome de usuário:
             </p>
           </div>
           <LoginForm />
